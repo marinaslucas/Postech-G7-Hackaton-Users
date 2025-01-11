@@ -10,7 +10,7 @@ export class AppController {
   }
 
   @Post()
-  postHello(@Body() body: {teste: number}): string {
+  postHello(@Body() body: { teste: number }): string {
     return this.appService.postHello(body);
   }
 }

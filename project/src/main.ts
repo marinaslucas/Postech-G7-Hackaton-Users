@@ -8,7 +8,7 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }), //possível passar construtores para o FastifyAdapter
+    new FastifyAdapter({ logger: true }) //possível passar construtores para o FastifyAdapter
   );
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0'); //permite outros hosts acessarem a aplicação
 }
