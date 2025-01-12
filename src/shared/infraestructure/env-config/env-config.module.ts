@@ -9,6 +9,8 @@ import { join } from 'node:path';
 //para isso, passamos um objeto para o método forRoot
 @Module({
   providers: [EnvConfigService],
+  // exports: [EnvConfigService],
+  // controllers: [],
 })
 export class EnvConfigModule extends ConfigModule {
   static async forRoot(
