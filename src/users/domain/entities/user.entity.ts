@@ -10,7 +10,6 @@ export class UserEntity {
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
-  //getters
   get name(): string {
     return this.props.name;
   }

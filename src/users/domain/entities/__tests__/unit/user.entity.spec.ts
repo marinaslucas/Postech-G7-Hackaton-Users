@@ -1,18 +1,12 @@
-import { before } from 'node:test';
 import { UserEntity, UserProps } from '../../user.entity';
-import { faker } from '@faker-js/faker';
+import { userDataBuilder } from '../../../testing/helpers/user-data-builder';
 
 describe('UserEntity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
 
   beforeEach(() => {
-    props = {
-      name: faker.person.fullName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-    };
-
+    props = userDataBuilder();
     sut = new UserEntity(props);
   });
   it('Constructor: should create a new user entity', () => {
@@ -20,7 +14,6 @@ describe('UserEntity unit tests', () => {
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.email).toEqual(props.email);
     expect(sut.props.password).toEqual(props.password);
-    expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 
   it('Getters: should return the correct values', () => {
@@ -34,6 +27,6 @@ describe('UserEntity unit tests', () => {
     expect(typeof sut.name).toEqual('string');
     expect(typeof sut.email).toEqual('string');
     expect(typeof sut.password).toEqual('string');
-    expect(typeof sut.createdAt).toEqual(Date);
+    expect(sut.createdAt).toBeInstanceOf(Date);
   });
 });
