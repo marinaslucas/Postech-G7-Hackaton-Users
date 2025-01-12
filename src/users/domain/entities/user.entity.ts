@@ -9,4 +9,18 @@ export class UserEntity {
   constructor(public readonly props: UserProps) {
     this.props.createdAt = props.createdAt ?? new Date();
   }
+
+  //getters
+  get name(): string {
+    return this.props.name;
+  }
+  get email(): string {
+    return this.props.email;
+  }
+  get password(): string {
+    return this.props.password;
+  }
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
 }
