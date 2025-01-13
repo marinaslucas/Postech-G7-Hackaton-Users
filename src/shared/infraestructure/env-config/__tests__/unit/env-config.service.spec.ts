@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EnvConfigService } from '../../env-config.service';
-import { ConfigModule } from '@nestjs/config';
-import { join } from 'path';
 import { EnvConfigModule } from '../../env-config.module';
 
 // Você precisa importar EnvConfigModule.forRoot() no seu teste para garantir que o ConfigModule seja configurado corretamente e que as variáveis de ambiente sejam carregadas. O EnvConfigService depende do ConfigModule para acessar as variáveis de ambiente, então é necessário configurar o ConfigModule no ambiente de teste.
