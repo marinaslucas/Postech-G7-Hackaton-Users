@@ -1,15 +1,15 @@
-import { ClassValidatorFields } from '../class-validator-fields';
+import { ClassValidatorFields } from '../../class-validator-fields';
 import * as libClassValidator from 'class-validator';
 
-interface StubEntityProps {
+interface StubEntity {
   prop: string;
 }
 
-let data: StubEntityProps = {
+let data: StubEntity = {
   prop: 'value',
 };
 
-class StubClassValidatorFields extends ClassValidatorFields<StubEntityProps> { }
+class StubClassValidatorFields extends ClassValidatorFields<StubEntity> {}
 let sut = new StubClassValidatorFields();
 
 beforeEach(() => {
