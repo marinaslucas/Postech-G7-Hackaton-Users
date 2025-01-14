@@ -9,7 +9,7 @@ let data: StubEntityProps = {
   prop: 'value',
 };
 
-class StubClassValidatorFields extends ClassValidatorFields<StubEntityProps> {}
+class StubClassValidatorFields extends ClassValidatorFields<StubEntityProps> { }
 let sut = new StubClassValidatorFields();
 
 beforeEach(() => {
@@ -33,6 +33,9 @@ describe('ClassValidatorFields', () => {
   });
 
   it('should return true if data is valid', () => {
+    const spyValidateSync = jest.spyOn(libClassValidator, 'validateSync');
+    spyValidateSync.mockReturnValue([]);
+
     const validationResult = sut.validate(data);
 
     expect(validationResult).toBeTruthy();
