@@ -7,15 +7,15 @@ import { validateSync } from 'class-validator';
 export abstract class ClassValidatorFields<PropsValidated>
   implements ValidatorFieldsInterface<PropsValidated>
 {
-  errors: FieldsErrors;
-  validatedData: PropsValidated;
+  errors: FieldsErrors = null;
+  validatedData: PropsValidated = null;
 
   validate(data: any): boolean {
-    const errors = validateSync(data);
-    console.log('validateSync.errors', errors);
-    if (errors.length > 0) {
+    const validateSyncErrors = validateSync(data);
+    console.log({ validateSyncErrors });
+    if (validateSyncErrors.length > 0) {
       this.errors = {};
-      for (const error of errors) {
+      for (const error of validateSyncErrors) {
         const field = error.property;
         this.errors[field] = Object.values(error.constraints);
       }
@@ -23,6 +23,6 @@ export abstract class ClassValidatorFields<PropsValidated>
     } else {
       this.validatedData = data;
     }
-    return !errors.length;
+    return !validateSyncErrors.length;
   }
 }
