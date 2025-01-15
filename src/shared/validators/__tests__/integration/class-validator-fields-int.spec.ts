@@ -45,12 +45,12 @@ class StubClassValidatorFields extends ClassValidatorFields<StubRules> {
 let sut = new StubClassValidatorFields();
 let dataWithRules = new StubRules(data);
 
-beforeEach(() => {
-  sut = new StubClassValidatorFields();
-  dataWithRules = new StubRules(data);
-});
-
 describe('ClassValidatorFields integration tests', () => {
+  beforeEach(() => {
+    sut = new StubClassValidatorFields();
+    dataWithRules = new StubRules(data);
+  });
+
   it('should be defined', () => {
     expect(sut).toBeDefined();
   });

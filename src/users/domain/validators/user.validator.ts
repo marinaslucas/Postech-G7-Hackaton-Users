@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { UserProps } from '../entities/user.entity';
-import { ClassValidatorFields } from '@/shared/validators/class-validator-fields';
+import { ClassValidatorFields } from '../../../shared/validators/class-validator-fields';
 
 export class UserRules {
   @MinLength(1)
@@ -22,9 +22,9 @@ export class UserRules {
   @MaxLength(255)
   email: string;
 
-  @IsNotEmpty()
   @MinLength(8)
   @MaxLength(255)
+  @IsNotEmpty()
   password: string;
 
   @IsOptional()

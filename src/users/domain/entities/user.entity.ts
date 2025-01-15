@@ -1,4 +1,4 @@
-import { UserValidatorFactory } from '@/users/domain/validators/user.validator';
+import { UserValidatorFactory } from '../validators/user.validator';
 import { Entity } from '../../../shared/domain/entities/entity';
 
 export type UserProps = {
