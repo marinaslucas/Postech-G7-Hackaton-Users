@@ -5,13 +5,16 @@ import { faker } from '@faker-js/faker';
 describe('UserEntity unit tests', () => {
   let props: UserProps;
   let sut: UserEntity;
+  UserEntity.validate = jest.fn();
 
   beforeEach(() => {
     props = userDataBuilder();
     sut = new UserEntity(props);
   });
+
   it('Constructor: should create a new user entity', () => {
     expect(sut).toBeInstanceOf(UserEntity);
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.props.name).toEqual(props.name);
     expect(sut.props.email).toEqual(props.email);
     expect(sut.props.password).toEqual(props.password);
@@ -34,12 +37,14 @@ describe('UserEntity unit tests', () => {
   it('Setters: should update the name', () => {
     const newName = faker.person.fullName();
     sut.updateName(newName);
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.name).toEqual(newName);
   });
 
   it('Setters: should update the password', () => {
     const newPassord = faker.internet.password();
     sut.updatePassword(newPassord);
+    expect(UserEntity.validate).toHaveBeenCalled();
     expect(sut.password).toEqual(newPassord);
   });
 });

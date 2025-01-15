@@ -12,14 +12,14 @@ let data: StubEntity = {
 class StubClassValidatorFields extends ClassValidatorFields<StubEntity> {}
 let sut = new StubClassValidatorFields();
 
-beforeEach(() => {
-  sut = new StubClassValidatorFields();
-  data = {
-    prop: 'value',
-  };
-});
-
 describe('ClassValidatorFields', () => {
+  beforeEach(() => {
+    sut = new StubClassValidatorFields();
+    data = {
+      prop: 'value',
+    };
+  });
+
   it('should be defined', () => {
     expect(sut).toBeDefined();
   });
