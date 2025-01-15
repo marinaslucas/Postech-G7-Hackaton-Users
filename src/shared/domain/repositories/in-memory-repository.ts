@@ -1,4 +1,5 @@
 import { Entity } from '../entities/entity';
+import { NotFoundError } from '../errors/not-found-error';
 import { RepositoryInterface } from './repositories-contracts';
 
 export abstract class InMemoryRepository<E extends Entity>
@@ -10,25 +11,34 @@ export abstract class InMemoryRepository<E extends Entity>
     this.items.push(entity);
   }
   async findById(id: string): Promise<E> {
-    const _id = `${id}`;
-    const item = this.items.find(item => item.id === _id);
-    if (!item) {
-      throw new Error('Entity not found');
-    }
-    return item;
+    return this._get(id);
   }
   async findAll(): Promise<E[]> {
     return this.items;
   }
-  async update(entity: E): Promise<void> {
-    this.items = this.items.map(item => {
-      if (item.id === entity.id) {
-        return entity;
-      }
-      return item;
-    });
+  async update(newEntity: E): Promise<void> {
+    const entityToUpdate = await this._get(newEntity.id);
+    const index = this._getIndex(entityToUpdate.id);
+    this.items[index] = newEntity;
   }
   async delete(id: string): Promise<void> {
-    this.items = this.items.filter(item => item.id !== id);
+    const entityToDelete = await this._get(id);
+    const index = this._getIndex(entityToDelete.id);
+    this.items.slice(index, 1);
+  }
+  protected async _get(id: string): Promise<E> {
+    const _id = `${id}`;
+    const entity = this.items.find(item => item.id === _id);
+    if (!entity) {
+      throw new NotFoundError('Entity not found');
+    }
+    return entity;
+  }
+  protected _getIndex(id: string): number {
+    const index = this.items.findIndex(item => item.id === id);
+    if (!index) {
+      throw new NotFoundError('Entity not found');
+    }
+    return index;
   }
 }
