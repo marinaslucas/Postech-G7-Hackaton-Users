@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { UserProps } from '../entities/user.entity';
-import { ClassValidatorFields } from '../../../shared/validators/class-validator-fields';
+import { ClassValidatorFields } from '../../../shared/domain/validators/class-validator-fields';
 
 export class UserRules {
   @MinLength(1)
@@ -37,7 +37,6 @@ export class UserRules {
 }
 
 export class UserValidator extends ClassValidatorFields<UserRules> {
-  //toda entidade terá um validador e terá de instanciar um validador para ela
   validate(data: UserProps) {
     return data && super.validate(new UserRules(data));
   }
