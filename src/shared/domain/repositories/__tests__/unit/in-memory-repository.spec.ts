@@ -6,9 +6,9 @@ import { NotFoundError } from '../../../../../shared/domain/errors/not-found-err
 let props = userDataBuilder();
 
 type StubEntityProps = typeof props;
-class StubEntity extends Entity<StubEntityProps> { }
+class StubEntity extends Entity<StubEntityProps> {}
 
-class StubRepository extends InMemoryRepository<StubEntity> { }
+class StubRepository extends InMemoryRepository<StubEntity> {}
 
 let sut: StubRepository;
 let entity = new StubEntity(props);
@@ -34,7 +34,9 @@ describe('InMemoryRepository unit tests', () => {
   });
 
   it('should throw error when not find an entity by id', async () => {
-    await expect(sut.findById('fakeId')).rejects.toThrow(new NotFoundError('Entity not found'));
+    await expect(sut.findById('fakeId')).rejects.toThrow(
+      new NotFoundError('Entity not found')
+    );
   });
 
   it('should find all entities', async () => {
