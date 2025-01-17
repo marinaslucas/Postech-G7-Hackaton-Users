@@ -1,13 +1,14 @@
 import { userDataBuilder } from '../../../../../users/domain/testing/helpers/user-data-builder';
 import { InMemoryRepository } from '../../in-memory-repository';
 import { Entity } from '../../../../../shared/domain/entities/entity';
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 
 let props = userDataBuilder();
 
 type StubEntityProps = typeof props;
-class StubEntity extends Entity<StubEntityProps> {}
+class StubEntity extends Entity<StubEntityProps> { }
 
-class StubRepository extends InMemoryRepository<StubEntity> {}
+class StubRepository extends InMemoryRepository<StubEntity> { }
 
 let sut: StubRepository;
 let entity = new StubEntity(props);
@@ -30,6 +31,10 @@ describe('InMemoryRepository unit tests', () => {
     const entityFound = await sut.findById(entity.id);
 
     expect(entityFound.toJson()).toStrictEqual(entity.toJson());
+  });
+
+  it('should throw error when not find an entity by id', async () => {
+    await expect(sut.findById('fakeId')).rejects.toThrow(new NotFoundError('Entity not found'));
   });
 
   it('should find all entities', async () => {
