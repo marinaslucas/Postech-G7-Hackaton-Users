@@ -5,24 +5,50 @@ describe('SearchableRepositoryContract unit tests', () => {
     expect(true).toBeDefined();
   });
   describe('getters', () => {
-    it('should return the page value if provided', () => {
-      const specifiedPage = 2;
-      const { page } = new SearchParams({ page: specifiedPage });
-      expect(page).toBe(2);
-    });
-    it('should return the page value as 1 if not provided', () => {
+    it('should return the page value if provided or not', () => {
       const sut = new SearchParams();
-      const page = sut.page;
-      expect(page).toBe(1);
+      expect(sut.page).toEqual(1);
+
+      const params = [
+        { page: null as any, expected: 1 },
+        { page: undefined as any, expected: 1 },
+        { page: '' as any, expected: 1 },
+        { page: 'test' as any, expected: 1 },
+        { page: 0, expected: 1 },
+        { page: -1, expected: 1 },
+        { page: 5.5, expected: 1 },
+        { page: true, expected: 1 },
+        { page: false, expected: 1 },
+        { page: {}, expected: 1 },
+        { page: 1, expected: 1 },
+        { page: 2, expected: 2 },
+      ];
+
+      params.forEach(i => {
+        expect(new SearchParams({ page: i.page }).page).toBe(i.expected);
+      });
     });
-    it('should return the perPage value if provided', () => {
-      const specifiedPerPage = 10;
-      const { perPage } = new SearchParams({ perPage: specifiedPerPage });
-      expect(perPage).toBe(10);
-    });
-    it('should return the perPage as 1 if not provided', () => {
-      const { perPage } = new SearchParams();
-      expect(perPage).toBe(1);
+    it('should return the perPage value if provided or not', () => {
+      const params = [
+        { perPage: null as any, expected: 15 },
+        { perPage: undefined as any, expected: 15 },
+        { perPage: '' as any, expected: 15 },
+        { perPage: 'test' as any, expected: 15 },
+        { perPage: 0, expected: 15 },
+        { perPage: -1, expected: 15 },
+        { perPage: 5.5, expected: 15 },
+        { perPage: true, expected: 15 },
+        { perPage: false, expected: 15 },
+        { perPage: {}, expected: 15 },
+        { perPage: 1, expected: 1 },
+        { perPage: 2, expected: 2 },
+        { perPage: 25, expected: 25 },
+      ];
+      params.forEach(i => {
+        expect(new SearchParams({ perPage: i.perPage }).perPage).toBe(
+          i.expected
+        );
+      });
     });
     it('should return the sort value if provided', () => {
       const specifiedSort = 'name';

@@ -13,7 +13,7 @@ export type SearchProps<Filter = string> = {
 
 export class SearchParams {
   protected _page: number;
-  protected _perPage: number | null;
+  protected _perPage = 15;
   protected _sort: string | null;
   protected _sortDir: SortDirection | null;
   protected _filter: string | null;
@@ -31,13 +31,15 @@ export class SearchParams {
   }
 
   private set page(value: number) {
-    let pageValue = Number(value);
-    if (Number.isNaN(pageValue)) {
-      pageValue = 1;
-    } else {
-      pageValue = Math.abs(parseInt(pageValue.toFixed(0)));
+    let _page = +value;
+    if (
+      typeof _page !== 'number' ||
+      _page <= 0 ||
+      parseInt(_page as any) !== _page
+    ) {
+      _page = 1;
     }
-    this._page = pageValue;
+    this._page = _page;
   }
 
   get perPage() {
@@ -45,13 +47,17 @@ export class SearchParams {
   }
 
   private set perPage(value: number) {
-    let pageSize = Number(value);
-    if (Number.isNaN(pageSize)) {
-      pageSize = 1;
-    } else {
-      pageSize = Math.abs(parseInt(pageSize.toFixed(0)));
+    console.log(value);
+    let _perPage = value;
+    if (
+      typeof _perPage !== 'number' ||
+      _perPage <= 0 ||
+      parseInt(_perPage as any) !== _perPage
+    ) {
+      _perPage = this._perPage;
     }
-    this._perPage = pageSize;
+    this._perPage = _perPage;
+    console.log(this._perPage);
   }
 
   get sort() {
