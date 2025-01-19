@@ -11,6 +11,16 @@ export type SearchProps<Filter = string> = {
   filter?: Filter | null;
 };
 
+export type SearchResultProps<E extends Entity, Filter> = {
+  items: E[];
+  total: number;
+  currentPage: number;
+  perPage: number;
+  sort: string | null;
+  sortDir: string | null;
+  filter: Filter | null;
+};
+
 export class SearchParams {
   protected _page: number;
   protected _perPage = 15;
@@ -98,10 +108,47 @@ export class SearchParams {
   }
 }
 
+export class SearchResult<E extends Entity, Filter = string> {
+  readonly items: E[];
+  readonly total: number;
+  readonly currentPage: number;
+  readonly perPage: number;
+  readonly lastPage: number;
+  readonly sort: string | null;
+  readonly sortDir: string | null;
+  readonly filter: Filter | null;
+
+  constructor(params: SearchResultProps<E, Filter>) {
+    this.items = params.items;
+    this.total = params.total;
+    this.currentPage = params.currentPage;
+    this.perPage = params.perPage;
+    this.lastPage = Math.ceil(this.total / this.perPage);
+    this.sort = params.sort ?? null;
+    this.sortDir = params.sortDir ?? null;
+    this.filter = params.filter ?? null;
+  }
+
+  toJSON(forceEntity = false) {
+    return {
+      items: forceEntity ? this.items.map(item => item.toJson()) : this.items,
+      total: this.total,
+      currentPage: this.currentPage,
+      perPage: this.perPage,
+      lastPage: this.lastPage,
+      sort: this.sort,
+      sortDir: this.sortDir,
+      filter: this.filter,
+    };
+  }
+}
+
 export interface SearchableRepositoryInterface<
   E extends Entity,
-  SearchInput,
-  SearchOutput,
+  Filter = string,
+  SearchInput = SearchParams,
+  SearchOutput = SearchResult<E, Filter>,
 > extends RepositoryInterface<E> {
-  search(props: SearchParams): Promise<SearchOutput>;
+  sortableFields: string[];
+  search(props: SearchInput): Promise<SearchOutput>;
 }
