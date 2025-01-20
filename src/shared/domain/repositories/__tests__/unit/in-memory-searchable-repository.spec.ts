@@ -11,11 +11,13 @@ const props = userDataBuilder();
 type StubEntityProps = typeof props;
 class StubEntity extends Entity<StubEntityProps> {}
 
-class StubRepository extends SearchableInMemoryRepository<StubEntity> {
+type Filter = string;
+
+class StubRepository extends SearchableInMemoryRepository<StubEntity, Filter> {
   sortableFields: string[] = ['name'];
   protected async applyFilter(
     items: StubEntity[],
-    name: string | null
+    name: Filter
   ): Promise<StubEntity[]> {
     if (!name) {
       return items;
@@ -149,7 +151,7 @@ describe('SearchableInMemoryRepository unit tests', () => {
       const entity = new StubEntity(userDataBuilder());
       const items = Array(16).fill(entity);
       sut.items = items;
-      const params = new SearchParams({});
+      const params = new SearchParams<string>({});
       const searchResultParams = await sut.search(params);
       expect(sut).toBeDefined();
       expect(searchResultParams).toStrictEqual(
