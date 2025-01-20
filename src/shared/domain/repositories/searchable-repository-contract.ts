@@ -75,7 +75,7 @@ export class SearchParams {
   }
 
   private set sort(value: string | null) {
-    let sortValue = value ? value.toString() : null;
+    const sortValue = value ? value.toString() : null;
     this._sort = sortValue;
   }
 
@@ -103,7 +103,7 @@ export class SearchParams {
   }
 
   private set filter(value: string | null) {
-    let filterValue = value ? value.toString() : null;
+    const filterValue = value ? value.toString() : null;
     this._filter = filterValue;
   }
 }

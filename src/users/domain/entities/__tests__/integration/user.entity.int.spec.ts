@@ -1,6 +1,5 @@
 import { UserEntity, UserProps } from '../../user.entity';
 import { userDataBuilder } from '../../../testing/helpers/user-data-builder';
-import { faker } from '@faker-js/faker';
 
 describe('UserEntity integration tests', () => {
   let props: UserProps;

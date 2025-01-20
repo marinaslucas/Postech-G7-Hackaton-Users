@@ -3,7 +3,7 @@ import { InMemoryRepository } from '../../in-memory-repository';
 import { Entity } from '../../../../../shared/domain/entities/entity';
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 
-let props = userDataBuilder();
+const props = userDataBuilder();
 
 type StubEntityProps = typeof props;
 class StubEntity extends Entity<StubEntityProps> {}

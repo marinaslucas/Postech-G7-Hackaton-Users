@@ -20,4 +20,16 @@ export class UserInMemoryRepository
       throw new Error('Email already exists');
     }
   }
+
+  protected async applyFilter(
+    items: UserEntity[],
+    filter: string | null
+  ): Promise<UserEntity[]> {
+    if (!filter) {
+      return items;
+    }
+    return items.filter(item =>
+      item.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  }
 }
