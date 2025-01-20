@@ -8,8 +8,15 @@ import {
 
 export abstract class SearchableInMemoryRepository<E extends Entity, Filter>
   extends InMemoryRepository<E>
-  implements SearchableRepositoryInterface<E, Filter, SearchParams<Filter>, SearchResult<E, Filter>> {
-  sortableFields: string[] = [];
+  implements
+    SearchableRepositoryInterface<
+      E,
+      Filter,
+      SearchParams<Filter>,
+      SearchResult<E, Filter>
+    >
+{
+  abstract sortableFields: string[];
 
   async search(params: SearchParams<Filter>): Promise<SearchResult<E, Filter>> {
     const itemsFiltered = await this.applyFilter(this.items, params.filter);

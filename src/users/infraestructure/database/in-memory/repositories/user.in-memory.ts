@@ -4,9 +4,10 @@ import { NotFoundError } from '../../../../../shared/domain/errors/not-found-err
 import { SearchableInMemoryRepository } from '../../../../../shared/domain/repositories/in-memory-searchable-repository';
 
 export class UserInMemoryRepository
-  extends SearchableInMemoryRepository<UserEntity>
-  implements UserRepository
+  extends SearchableInMemoryRepository<UserEntity, string>
+  implements UserRepository.Repository
 {
+  sortableFields: string[] = ['name', 'createdAt'];
   async findByEmail(email: string): Promise<UserEntity> {
     const entity = this.items.find(item => item.email === email);
     if (!entity) {
