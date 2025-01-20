@@ -219,7 +219,7 @@ describe('SearchableInMemoryRepository unit tests', () => {
       expect(paginatedAndFilteredItems.sortDir).toBeNull();
       expect(paginatedAndFilteredItems.filter).toEqual(entity1.props.name);
     });
-    it('should only paginate and sort', async () => {
+    it('should only paginate and sort page 1', async () => {
       const entity1 = new StubEntity(userDataBuilder({ name: 'A' }));
       const entity2 = new StubEntity(userDataBuilder({ name: 'B' }));
       const entity3 = new StubEntity(userDataBuilder({ name: 'C' }));
@@ -242,5 +242,73 @@ describe('SearchableInMemoryRepository unit tests', () => {
       expect(paginatedAndSortedItems.items[0].props.name).toBe('A');
       expect(paginatedAndSortedItems.items[1].props.name).toBe('B');
     });
+    it('should only paginate and sort last page', async () => {
+        const entity1 = new StubEntity(userDataBuilder({ name: 'A' }));
+        const entity2 = new StubEntity(userDataBuilder({ name: 'B' }));
+        const entity3 = new StubEntity(userDataBuilder({ name: 'C' }));
+        const items = [entity1, entity2, entity3];
+        sut.items = items;
+        const params = new SearchParams({
+          page: 2,
+          perPage: 2,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: null,
+        });
+        const paginatedAndSortedItems = await sut.search(params);
+        expect(sut).toBeDefined();
+        expect(paginatedAndSortedItems.items).toHaveLength(1);
+        expect(paginatedAndSortedItems.total).toBe(3);
+        expect(paginatedAndSortedItems.lastPage).toBe(2);
+        expect(paginatedAndSortedItems.currentPage).toBe(2);
+        expect(paginatedAndSortedItems.perPage).toBe(2);
+        expect(paginatedAndSortedItems.items[0].props.name).toBe('C');
+      });
+    it('should only paginate and sort without sortDir', async () => {
+        const entity1 = new StubEntity(userDataBuilder({ name: 'A' }));
+        const entity2 = new StubEntity(userDataBuilder({ name: 'B' }));
+        const entity3 = new StubEntity(userDataBuilder({ name: 'C' })); 
+        const items = [entity1, entity2, entity3];
+        sut.items = items;
+        const params = new SearchParams({
+          page: 1,
+          perPage: 2,
+          sort: 'name',
+          sortDir: null,
+          filter: null,
+        });
+        const paginatedAndSortedItems = await sut.search(params);
+        expect(sut).toBeDefined();
+        expect(paginatedAndSortedItems.items).toHaveLength(2);
+        expect(paginatedAndSortedItems.total).toBe(3);
+        expect(paginatedAndSortedItems.lastPage).toBe(2);
+        expect(paginatedAndSortedItems.currentPage).toBe(1);
+        expect(paginatedAndSortedItems.perPage).toBe(2);
+        expect(paginatedAndSortedItems.items[0].props.name).toBe('C');
+        expect(paginatedAndSortedItems.items[1].props.name).toBe('B');
+      });
+      it('should paginate, sort and filter', async () => {
+        const entity1 = new StubEntity(userDataBuilder({ name: 'A' }));
+        const entity2 = new StubEntity(userDataBuilder({ name: 'B1' }));
+        const entity3 = new StubEntity(userDataBuilder({ name: 'B2' }));
+        const entity4 = new StubEntity(userDataBuilder({ name: 'C' })); 
+        const items = [entity1, entity2, entity3, entity4];
+        sut.items = items;
+        const params = new SearchParams({
+          page: 1,
+          perPage: 1,
+          sort: 'name',
+          sortDir: 'asc',
+          filter: 'B',
+        });
+        const paginatedAndSortedItems = await sut.search(params);
+        expect(sut).toBeDefined();
+        expect(paginatedAndSortedItems.items).toHaveLength(1);
+        expect(paginatedAndSortedItems.total).toBe(2);
+        expect(paginatedAndSortedItems.lastPage).toBe(2);
+        expect(paginatedAndSortedItems.currentPage).toBe(1);
+        expect(paginatedAndSortedItems.perPage).toBe(1);
+        expect(paginatedAndSortedItems.items[0].props.name).toBe('B1');
+      });
   });
 });
