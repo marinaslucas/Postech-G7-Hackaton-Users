@@ -2,6 +2,7 @@ import { UserEntity } from '../../../../../users/domain/entities/user.entity';
 import { UserRepository } from '../../../../../users/domain/repositories/user.repository';
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 import { SearchableInMemoryRepository } from '../../../../../shared/domain/repositories/in-memory-searchable-repository';
+import { SortDirection } from '../../../../../shared/domain/repositories/searchable-repository-contract';
 
 export class UserInMemoryRepository
   extends SearchableInMemoryRepository<UserEntity, string>
@@ -24,7 +25,7 @@ export class UserInMemoryRepository
 
   protected async applyFilter(
     items: UserEntity[],
-    filter: string | null
+    filter: UserRepository.Filter | null
   ): Promise<UserEntity[]> {
     if (!filter) {
       return items;
@@ -32,5 +33,16 @@ export class UserInMemoryRepository
     return items.filter(item =>
       item.name.toLowerCase().includes(filter.toLowerCase())
     );
+  }
+
+  protected async applySort(
+    items: UserEntity[],
+    sort: string | null,
+    sortDir: SortDirection | null
+  ): Promise<UserEntity[]> {
+    if (!sort || !this.sortableFields.includes(sort)) {
+      return super.applySort(items, 'createdAt', 'desc');
+    }
+    return super.applySort(items, sort, sortDir);
   }
 }
