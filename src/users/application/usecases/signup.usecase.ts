@@ -35,10 +35,11 @@ export namespace SignupUseCase {
 
       const hashedPassword = await this.hashProvider.generateHash(password);
 
-      const userEntity = new UserEntity({
-        ...input,
-        password: hashedPassword,
-      });
+      const userEntity = new UserEntity(
+        Object.assign(input, {
+          password: hashedPassword,
+        })
+      );
 
       await this.userRepository.insert(userEntity);
 
