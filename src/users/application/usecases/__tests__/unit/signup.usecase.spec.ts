@@ -1,7 +1,7 @@
 import { SignupUseCase } from '../../signup.usecase';
 import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/bcrypt-hash-provider';
 import { BadRequestError } from '../../../../../users/application/errors/bad-request-error';
-import { UserInMemoryRepository } from '../../../../../users/infraestructure/database/in-memory/repositories/user.in-memory.repository';
+import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
 import { ConflictError } from '../../../../../shared/domain/errors/conflict-error';
 
 describe('UserSignupUseCase unit tests', () => {
