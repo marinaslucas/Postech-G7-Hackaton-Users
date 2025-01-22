@@ -3,6 +3,7 @@ import { UserRepository } from '../../../../domain/repositories/user.repository'
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 import { SearchableInMemoryRepository } from '../../../../../shared/domain/repositories/in-memory-searchable-repository';
 import { SortDirection } from '../../../../../shared/domain/repositories/searchable-repository-contract';
+import { ConflictError } from '../../../../../shared/domain/errors/conflict-error';
 
 export class UserInMemoryRepository
   extends SearchableInMemoryRepository<UserEntity, string>
@@ -19,7 +20,7 @@ export class UserInMemoryRepository
   async emailExists(email: string): Promise<void> {
     const user = this.items.find(item => item.email === email);
     if (user) {
-      throw new Error('Email already exists');
+      throw new ConflictError('Email already exists');
     }
   }
 

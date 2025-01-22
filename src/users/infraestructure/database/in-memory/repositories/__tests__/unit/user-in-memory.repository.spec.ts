@@ -3,6 +3,7 @@ import { UserInMemoryRepository } from '../../user.in-memory.repository';
 import { NotFoundError } from '../../../../../../../shared/domain/errors/not-found-error';
 import { ConflictError } from '../../../../../../../shared/domain/errors/conflict-error';
 import { userDataBuilder } from '../../../../../../../users/domain/testing/helpers/user-data-builder';
+
 describe('UserInMemoryRepository unit tests', () => {
   let sut: UserInMemoryRepository;
 
