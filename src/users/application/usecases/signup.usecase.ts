@@ -2,20 +2,13 @@ import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
 import { BadRequestError } from '../errors/bad-request-error';
 import { HashProvider } from '../../../shared/application/providers/hash-provider';
+import { Output } from '../dtos/user-output';
 
 export namespace SignupUseCase {
   export type Input = {
     name: string;
     email: string;
     password: string;
-  };
-
-  export type Output = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    createdAt?: Date;
   };
 
   export class UseCase {
