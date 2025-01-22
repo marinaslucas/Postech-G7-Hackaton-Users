@@ -1,11 +1,13 @@
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
-import { Output } from '../dtos/user-output';
+import { UserOutput } from '../dtos/user-output';
 import { BadRequestError } from '../errors/bad-request-error';
 
 export namespace GetUserUseCase {
   export type Input = {
     id: string;
   };
+
+  export type Output = UserOutput;
 
   export class UseCase {
     constructor(private userRepository: UserRepository.Repository) {}
