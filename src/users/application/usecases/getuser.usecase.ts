@@ -1,7 +1,8 @@
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
-import { UserOutput } from '../dtos/user-output';
+import { UserOutput, UserOutputMapper } from '../dtos/user-output';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
+import { UserEntity } from '@/users/domain/entities/user.entity';
 
 export namespace GetUserUseCase {
   export type Input = {
@@ -20,9 +21,13 @@ export namespace GetUserUseCase {
         throw new BadRequestError('Input data not provided');
       }
 
-      const userEntity = (await this.userRepository.findById(id)).toJson();
+      const userEntity = await this.userRepository.findById(id);
 
-      return userEntity;
+      return this.toOutput(userEntity);
+    }
+
+    private toOutput(entity: UserEntity): UserOutput {
+      return UserOutputMapper.toOutput(entity);
     }
   }
 }
