@@ -1,6 +1,6 @@
 import { SignupUseCase } from '../../signup.usecase';
 import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/bcrypt-hash-provider';
-import { BadRequestError } from '../../../../../users/application/errors/bad-request-error';
+import { BadRequestError } from '../../../../../shared/application/errors/bad-request-error';
 import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
 import { ConflictError } from '../../../../../shared/domain/errors/conflict-error';
 
