@@ -1,9 +1,9 @@
-import { HashProviderImplementation } from '../../hash-provider';
+import { HashProvider } from '../../hash-provider';
 
 describe('BcryptHashProvider', () => {
-  let sut: HashProviderImplementation.BcryptHashProvider;
+  let sut: HashProvider;
   beforeEach(() => {
-    sut = new HashProviderImplementation.BcryptHashProvider();
+    sut = new HashProvider();
   });
   it('should be able to generate a hash', async () => {
     const password = '123456';

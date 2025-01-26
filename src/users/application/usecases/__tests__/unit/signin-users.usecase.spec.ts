@@ -1,7 +1,7 @@
 import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
 import { SigninUseCase } from '../../signin-users.usecase';
-import { HashProvider } from '../../../../../shared/application/providers/hash-provider-interface';
-import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/hash-provider';
+import { HashProviderContract } from '../../../../../shared/application/providers/hash-provider-interface';
+import { HashProvider } from '../../../../../shared/application/providers/implementations/hash-provider';
 import { userDataBuilder } from '../../../../domain/testing/helpers/user-data-builder';
 import { BadRequestError } from '../../../../..//shared/application/errors/bad-request-error';
 import { InvalidCredentialsError } from '../../../../../shared/application/errors/Invalid-credentials-error';
@@ -11,11 +11,11 @@ import { NotFoundError } from '../../../../../shared/domain/errors/not-found-err
 describe('SigninUseCase unit tests', () => {
   let sut: SigninUseCase.UseCase;
   let repository: UserInMemoryRepository;
-  let hashProvider: HashProvider;
+  let hashProvider: HashProviderContract;
 
   beforeEach(() => {
     repository = new UserInMemoryRepository();
-    hashProvider = new HashProviderImplementation();
+    hashProvider = new HashProvider();
     sut = new SigninUseCase.UseCase(repository, hashProvider);
   });
 

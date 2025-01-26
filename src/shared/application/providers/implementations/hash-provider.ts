@@ -1,7 +1,7 @@
-import { HashProvider } from '../hash-provider-interface';
+import { HashProviderContract } from '../hash-provider-interface';
 import { compare, hash } from 'bcryptjs';
 
-export class HashProviderImplementation implements HashProvider {
+export class HashProvider implements HashProviderContract {
   private readonly SALT_ROUNDS = 6;
 
   async generateHash(payload: string): Promise<string> {

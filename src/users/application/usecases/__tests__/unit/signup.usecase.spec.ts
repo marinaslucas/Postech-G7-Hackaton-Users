@@ -1,5 +1,5 @@
 import { SignupUseCase } from '../../signup-users.usecase';
-import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/hash-provider';
+import { HashProvider } from '../../../../../shared/application/providers/implementations/hash-provider';
 import { BadRequestError } from '../../../../../shared/application/errors/bad-request-error';
 import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
 import { ConflictError } from '../../../../../shared/domain/errors/conflict-error';
@@ -7,11 +7,10 @@ import { ConflictError } from '../../../../../shared/domain/errors/conflict-erro
 describe('UserSignupUseCase unit tests', () => {
   let sut: SignupUseCase.UseCase;
   let repository: UserInMemoryRepository;
-  let hashProvider: HashProviderImplementation.BcryptHashProvider;
-
+  let hashProvider: HashProvider;
   beforeEach(() => {
     repository = new UserInMemoryRepository();
-    hashProvider = new HashProviderImplementation.BcryptHashProvider();
+    hashProvider = new HashProvider();
     sut = new SignupUseCase.UseCase(repository, hashProvider);
   });
 
