@@ -17,10 +17,13 @@ import { UserRepository } from '../domain/repositories/user.repository';
     { provide: 'HashProvider', useClass: HashProvider },
     {
       provide: SignupUseCase.UseCase,
-      useFactory: (userRepository: UserRepository.Repository, hashProvider: HashProvider) => {
+      useFactory: (
+        userRepository: UserRepository.Repository,
+        hashProvider: HashProvider
+      ) => {
         return new SignupUseCase.UseCase(userRepository, hashProvider);
       },
     },
   ],
 })
-export class UsersModule { }
+export class UsersModule {}
