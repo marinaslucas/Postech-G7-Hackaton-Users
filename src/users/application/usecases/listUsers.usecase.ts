@@ -5,7 +5,7 @@ import { SearchInput } from '../../../shared/application/dtos/search-input';
 import {
   PaginationOutput,
   PaginationOutputMapper,
-} from '@/shared/application/dtos/pagination-output';
+} from '../../../shared/application/dtos/pagination-output';
 
 export namespace ListUsersUseCase {
   export type Input = SearchInput<string>;

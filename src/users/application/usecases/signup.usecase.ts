@@ -2,6 +2,7 @@ import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { UserRepository } from '../../../users/domain/repositories/user.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { HashProvider } from '../../../shared/application/providers/hash-provider';
+import { UserOutputMapper } from '../dtos/user-output';
 import { UserOutput } from '../dtos/user-output';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
@@ -39,8 +40,7 @@ export namespace SignupUseCase {
 
       await this.userRepository.insert(userEntity);
 
-      const insertedUserEntity = userEntity.toJson();
-      return insertedUserEntity;
+      return UserOutputMapper.toOutput(userEntity);
     }
   }
 }

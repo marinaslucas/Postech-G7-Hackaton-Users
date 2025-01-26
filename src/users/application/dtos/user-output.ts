@@ -5,11 +5,17 @@ export interface UserOutput {
   name: string;
   email: string;
   password: string;
-  createdAt?: Date;
+  createdAt: Date;
 }
 
 export class UserOutputMapper {
   static toOutput(entity: UserEntity): UserOutput {
-    return entity.toJson();
+    return {
+      id: entity.id,
+      name: entity.name,
+      email: entity.email,
+      password: entity.password,
+      createdAt: entity.createdAt,
+    };
   }
 }
