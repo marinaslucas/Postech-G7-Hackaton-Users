@@ -4,7 +4,7 @@ import { BadRequestError } from '../../../shared/application/errors/bad-request-
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { InvalidPasswordError } from '../../../shared/application/errors/invalid-password-error';
-import { HashProviderImplementation } from '../../..//shared/application/providers/implementations/bcrypt-hash-provider';
+import { HashProviderImplementation } from '../../../shared/application/providers/implementations/hash-provider';
 
 export namespace UpdatePasswordUseCase {
   export type Input = {

@@ -1,4 +1,4 @@
-import { HashProviderImplementation } from '../../bcrypt-hash-provider';
+import { HashProviderImplementation } from '../../hash-provider';
 
 describe('BcryptHashProvider', () => {
   let sut: HashProviderImplementation.BcryptHashProvider;
