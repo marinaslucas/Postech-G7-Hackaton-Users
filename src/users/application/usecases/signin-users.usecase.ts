@@ -1,14 +1,14 @@
-import { UserEntity } from '../../../users/domain/entities/user.entity';
-import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import { UserEntity } from '../../domain/entities/user.entity';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { HashProvider } from '../../../shared/application/providers/hash-provider';
 import { UserOutputMapper } from '../dtos/user-output';
 import { UserOutput } from '../dtos/user-output';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
+import { InvalidCredentialsError } from '../../../shared/application/errors/Invalid-credentials-error';
 
-export namespace SignupUseCase {
+export namespace SigninUseCase {
   export type Input = {
-    name: string;
     email: string;
     password: string;
   };
@@ -22,25 +22,27 @@ export namespace SignupUseCase {
     ) {}
 
     async execute(input: Input): Promise<Output> {
-      const { email, password, name } = input;
+      const { email, password } = input;
 
-      if (!email || !password || !name) {
+      if (!email || !password) {
         throw new BadRequestError('Input data not provided');
       }
 
-      await this.userRepository.emailExists(email);
+      const entity = await this.userRepository.findByEmail(email);
 
-      const hashedPassword = await this.hashProvider.generateHash(password);
-
-      const userEntity = new UserEntity(
-        Object.assign(input, {
-          password: hashedPassword,
-        })
+      const isPasswordValid = await this.hashProvider.compareHash(
+        password,
+        entity.password
       );
 
-      await this.userRepository.insert(userEntity);
+      if (!isPasswordValid) {
+        throw new InvalidCredentialsError('Invalid password');
+      }
+      return this.toOutput(entity);
+    }
 
-      return UserOutputMapper.toOutput(userEntity);
+    private toOutput(entity: UserEntity): UserOutput {
+      return UserOutputMapper.toOutput(entity);
     }
   }
 }

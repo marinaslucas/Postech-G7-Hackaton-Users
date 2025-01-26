@@ -1,12 +1,13 @@
-import { UserRepository } from '../../../users/domain/repositories/user.repository';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dtos/user-output';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
-import { UserEntity } from '@/users/domain/entities/user.entity';
+import { UserEntity } from '../../domain/entities/user.entity';
 
-export namespace GetUserUseCase {
+export namespace UpdateUserUseCase {
   export type Input = {
     id: string;
+    name: string;
   };
 
   export type Output = UserOutput;
@@ -15,13 +16,17 @@ export namespace GetUserUseCase {
     constructor(private userRepository: UserRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const { id } = input;
+      const { id, name } = input;
 
-      if (!id) {
+      if (!id || !name) {
         throw new BadRequestError('Input data not provided');
       }
 
-      const userEntity = await this.userRepository.findById(id);
+      const userEntity = await this.userRepository.findById(id); //Já joga o erro caso nao encontre a entidade pelo id
+
+      userEntity.updateName(name);
+
+      await this.userRepository.update(userEntity);
 
       return this.toOutput(userEntity);
     }

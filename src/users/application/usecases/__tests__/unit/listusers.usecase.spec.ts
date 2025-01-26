@@ -1,5 +1,5 @@
 import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
-import { ListUsersUseCase } from '../../listusers.usecase';
+import { ListUsersUseCase } from '../../list-users.usecase';
 import { UserRepository } from '../../../../domain/repositories/user.repository';
 import { UserEntity } from '../../../../domain/entities/user.entity';
 import { userDataBuilder } from '../../../../domain/testing/helpers/user-data-builder';

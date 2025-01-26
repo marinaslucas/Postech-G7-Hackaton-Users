@@ -1,4 +1,4 @@
-import { SignupUseCase } from '../../signup.usecase';
+import { SignupUseCase } from '../../signup-users.usecase';
 import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/bcrypt-hash-provider';
 import { BadRequestError } from '../../../../../shared/application/errors/bad-request-error';
 import { UserInMemoryRepository } from '../../../../infraestructure/database/in-memory/repositories/user-in-memory.repository';
