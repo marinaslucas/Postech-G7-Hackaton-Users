@@ -22,6 +22,7 @@ import { UpdateUserUseCase } from '../application/usecases/update-user.usecase';
 import { UpdatePasswordUseCase } from '../application/usecases/update-password.usecase';
 import { UpdatePasswordDto } from './dtos/update-password.dto copy';
 import { ListUsersDto } from './dtos/list-users.dto copy';
+import { SigninDto } from './dtos/signin.dto';
 
 @Controller('users')
 export class UsersController {
@@ -54,8 +55,8 @@ export class UsersController {
 
   @HttpCode(200)
   @Post('login')
-  async login(@Body() signupDto: SignupDto) {
-    return await this.signinUseCase.execute(signupDto);
+  async login(@Body() signinDto: SigninDto) {
+    return await this.signinUseCase.execute(signinDto);
   }
 
   @Get()
