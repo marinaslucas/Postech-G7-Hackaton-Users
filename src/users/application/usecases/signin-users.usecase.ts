@@ -1,7 +1,7 @@
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
-import { HashProvider } from '../../../shared/application/providers/hash-provider';
+import { HashProviderContract } from '../../../shared/application/providers/hash-provider-interface';
 import { UserOutputMapper } from '../dtos/user-output';
 import { UserOutput } from '../dtos/user-output';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
@@ -18,7 +18,7 @@ export namespace SigninUseCase {
   export class UseCase implements DefaultUseCase<Input, Output> {
     constructor(
       private userRepository: UserRepository.Repository,
-      private hashProvider: HashProvider
+      private hashProvider: HashProviderContract
     ) {}
 
     async execute(input: Input): Promise<Output> {

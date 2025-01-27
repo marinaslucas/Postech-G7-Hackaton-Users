@@ -22,7 +22,7 @@ describe('UpdateUserUseCase unit tests', () => {
 
   it('Should throws error when name not provided', async () => {
     await expect(() => sut.execute({ id: 'fakeId', name: '' })).rejects.toThrow(
-      new BadRequestError('Name not provided')
+      new BadRequestError('Input data not provided')
     );
   });
 

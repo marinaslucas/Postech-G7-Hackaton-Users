@@ -2,19 +2,20 @@ import { UserInMemoryRepository } from '../../../../infraestructure/database/in-
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 import { UpdatePasswordUseCase } from '../../update-password.usecase';
 import { BadRequestError } from '../../../../../shared/application/errors/bad-request-error';
-import { HashProviderImplementation } from '../../../../../shared/application/providers/implementations/bcrypt-hash-provider';
+import { HashProvider } from '../../../../../shared/application/providers/implementations/hash-provider';
 import { InvalidPasswordError } from '../../../../../shared/application/errors/invalid-password-error';
 import { UserEntity } from '../../../../domain/entities/user.entity';
 import { userDataBuilder } from '../../../../domain/testing/helpers/user-data-builder';
+import { HashProviderContract } from '@/shared/application/providers/hash-provider-interface';
 
 describe('UpdatePasswordUseCase unit tests', () => {
   let sut: UpdatePasswordUseCase.UseCase;
   let repository: UserInMemoryRepository;
-  let hashProvider: HashProviderImplementation;
+  let hashProvider: HashProvider;
 
   beforeEach(() => {
     repository = new UserInMemoryRepository();
-    hashProvider = new HashProviderImplementation();
+    hashProvider = new HashProvider();
     sut = new UpdatePasswordUseCase.UseCase(repository, hashProvider);
   });
 

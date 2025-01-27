@@ -1,8 +1,6 @@
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { UserOutput, UserOutputMapper } from '../dtos/user-output';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
-import { UserEntity } from '../../domain/entities/user.entity';
 
 export namespace DeleteUserUseCase {
   export type Input = {

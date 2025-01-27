@@ -28,7 +28,9 @@ export namespace UpdateUserUseCase {
 
       await this.userRepository.update(userEntity);
 
-      return this.toOutput(userEntity);
+      const updatedUser = await this.userRepository.findById(id);
+
+      return this.toOutput(updatedUser);
     }
 
     private toOutput(entity: UserEntity): UserOutput {
