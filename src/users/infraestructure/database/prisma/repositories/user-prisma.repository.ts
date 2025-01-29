@@ -1,7 +1,7 @@
 import { PrismaService } from '../../../../../shared/infraestructure/database/prisma/prisma.service';
 import { UserEntity } from '../../../../domain/entities/user.entity';
 import { UserRepository } from '../../../../domain/repositories/user.repository';
-import { UserModelMapper } from './models/user-model.mapper';
+import { UserModelMapper } from '../models/user-model.mapper';
 
 export class UserPrismaRepository implements UserRepository.Repository {
   sortableFields: string[];
