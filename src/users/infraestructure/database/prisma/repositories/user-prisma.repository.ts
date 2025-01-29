@@ -1,12 +1,12 @@
-import { PrismaService } from "@/shared/infraestructure/database/prisma/prisma.service";
-import { UserEntity } from "@/users/domain/entities/user.entity";
-import { UserRepository } from "@/users/domain/repositories/user.repository";
+import { PrismaService } from "../../../../../shared/infraestructure/database/prisma/prisma.service";
+import { UserEntity } from "../../../../domain/entities/user.entity";
+import { UserRepository } from "../../../../domain/repositories/user.repository";
+import { UserModelMapper } from "./user-model.mapper";
 
-export class UserPrismaRepository implements UserRepository.Repository 
-{
+export class UserPrismaRepository implements UserRepository.Repository {
     sortableFields: string[];
 
-    constructor(private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) { }
 
     findByEmail(email: string): Promise<UserEntity> {
         throw new Error("Method not implemented.");
@@ -19,13 +19,13 @@ export class UserPrismaRepository implements UserRepository.Repository
     search(props: UserRepository.SearchParams): Promise<UserRepository.SearchResult> {
         throw new Error("Method not implemented.");
     }
-    
+
     insert(entity: UserEntity): Promise<void> {
         throw new Error("Method not implemented.");
     }
 
     findById(id: string): Promise<UserEntity> {
-        throw new Error("Method not implemented.");
+        return this._get(id);
     }
 
     findAll(): Promise<UserEntity[]> {
@@ -38,6 +38,20 @@ export class UserPrismaRepository implements UserRepository.Repository
 
     delete(id: string): Promise<void> {
         throw new Error("Method not implemented.");
+    }
+
+    protected async _get(id: string): Promise<UserEntity> {
+        try {
+            const user = await this.prismaService.user.findUnique({
+                where: {
+                    id,
+                },
+            })
+            return UserModelMapper.toEntity(user);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
 }
