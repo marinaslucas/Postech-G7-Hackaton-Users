@@ -16,12 +16,11 @@ import { UserPrismaRepository } from './database/prisma/repositories/user-prisma
 @Module({
   controllers: [UsersController],
   providers: [
-    {provide:'PrismaService',
-      useClass: PrismaService
-     },
+    { provide: 'PrismaService', useClass: PrismaService },
     {
       provide: 'UserRepository',
-      useFactory: (prismaService: PrismaService) => new UserPrismaRepository(prismaService),
+      useFactory: (prismaService: PrismaService) =>
+        new UserPrismaRepository(prismaService),
       inject: ['PrismaService'],
     },
     { provide: 'HashProvider', useClass: HashProvider },
