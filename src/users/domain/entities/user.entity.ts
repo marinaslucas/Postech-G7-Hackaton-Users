@@ -10,9 +10,12 @@ export type UserProps = {
 };
 
 export class UserEntity extends Entity<UserProps> {
-  constructor(public readonly props: UserProps) {
+  constructor(
+    public readonly props: UserProps,
+    id?: string
+  ) {
     UserEntity.validate(props);
-    super(props); //chama o construtor da classe pai
+    super(props, id); //chama o construtor da classe pai
     this.props.createdAt = props.createdAt ?? new Date();
   }
   updateName(value: string) {
