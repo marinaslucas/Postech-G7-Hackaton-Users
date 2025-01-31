@@ -1,4 +1,5 @@
 import { SignupUseCase } from '../../../application/usecases/signup-users.usecase';
+import { UserPresenter } from '../../presenters/user.presenter';
 import { UsersController } from '../../users.controller';
 
 const userInputData: SignupUseCase.Input = {
@@ -40,39 +41,39 @@ describe('UsersController', () => {
 
   it('should create a user', async () => {
     execute.mockResolvedValueOnce(userOutput);
-    const result = await sut.create(userInputData);
-    expect(result).toStrictEqual(userOutput);
+    const presenter = await sut.create(userInputData);
+    expect(presenter).toStrictEqual(new UserPresenter(userOutput));
     expect(execute).toHaveBeenCalledWith(userInputData);
   });
 
   it('should signin a user', async () => {
     execute.mockResolvedValueOnce(userOutput);
-    const result = await sut.login(userInputData);
-    expect(result).toStrictEqual(userOutput);
+    const presenter = await sut.login(userInputData);
+    expect(presenter).toStrictEqual(new UserPresenter(userOutput));
     expect(execute).toHaveBeenCalledWith(userInputData);
   });
 
   it('should update a user', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, name: 'novo nome' });
-    const result = await sut.update('1', { name: 'novo nome' });
-    expect(result).toStrictEqual({ ...userOutput, name: 'novo nome' });
+    const presenter = await sut.update('1', { name: 'novo nome' });
+    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, name: 'novo nome' }));
     expect(execute).toHaveBeenCalledWith({ id: '1', name: 'novo nome' });
   });
 
   it('should update a user', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, name: 'novo nome' });
-    const result = await sut.update('1', { name: 'novo nome' });
-    expect(result).toStrictEqual({ ...userOutput, name: 'novo nome' });
+    const presenter = await sut.update('1', { name: 'novo nome' });
+    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, name: 'novo nome' }));
     expect(execute).toHaveBeenCalledWith({ id: '1', name: 'novo nome' });
   });
 
   it('should update password', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, password: '456' });
-    const result = await sut.updatePassword('1', {
+    const presenter = await sut.updatePassword('1', {
       password: '123',
       newPassword: '456',
     });
-    expect(result).toStrictEqual({ ...userOutput, password: '456' });
+    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, password: '456' }));
     expect(execute).toHaveBeenCalledWith({
       id: '1',
       password: '123',
@@ -82,20 +83,20 @@ describe('UsersController', () => {
 
   it('should delete a user', async () => {
     execute.mockResolvedValueOnce({});
-    const result = await sut.remove('1');
+    await sut.remove('1');
     expect(execute).toHaveBeenCalledWith({ id: '1' });
   });
 
   it('should find one user', async () => {
     execute.mockResolvedValueOnce(userOutput);
-    const result = await sut.findOne('1');
-    expect(result).toStrictEqual(userOutput);
+    const presenter = await sut.findOne('1');
+    expect(presenter).toStrictEqual(new UserPresenter(userOutput));
     expect(execute).toHaveBeenCalledWith({ id: '1' });
   });
 
   it('should list users', async () => {
-    execute.mockResolvedValueOnce([userOutput]);
-    const result = await sut.search({
+    execute.mockResolvedValueOnce([new UserPresenter(userOutput)]);
+    const presenter = await sut.search({
       page: 1,
       perPage: 1,
       sortDir: 'asc',
@@ -107,6 +108,6 @@ describe('UsersController', () => {
       sortDir: 'asc',
       filter: userInputData.name,
     });
-    expect(result).toStrictEqual([userOutput]);
+    expect(presenter).toStrictEqual([new UserPresenter(userOutput)]);
   });
 });
