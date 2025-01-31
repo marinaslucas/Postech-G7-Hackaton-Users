@@ -23,7 +23,10 @@ import { UpdatePasswordUseCase } from '../application/usecases/update-password.u
 import { UpdatePasswordDto } from './dtos/update-password.dto copy';
 import { ListUsersDto } from './dtos/list-users.dto copy';
 import { SigninDto } from './dtos/signin.dto';
-import { UserPresenter } from './presenters/user.presenter';
+import {
+  UserCollectionPresenter,
+  UserPresenter,
+} from './presenters/user.presenter';
 import { UserOutput } from '../application/dtos/user-output';
 
 @Controller('users')
@@ -53,6 +56,10 @@ export class UsersController {
     return new UserPresenter(output);
   }
 
+  static listUsersToResponse(output: ListUsersUseCase.Output) {
+    return new UserCollectionPresenter(output);
+  }
+
   @HttpCode(201)
   @Post()
   async create(@Body() signupDto: SignupDto) {
@@ -70,7 +77,7 @@ export class UsersController {
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
     const output = await this.listUsersUseCase.execute(searchParams);
-    return output;
+    return UsersController.listUsersToResponse(output);
   }
 
   @Get(':id')
