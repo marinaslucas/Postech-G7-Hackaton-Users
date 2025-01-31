@@ -9,9 +9,9 @@ import { ClassSerializerInterceptor } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }) //possível passar construtores para o FastifyAdapter
+    new FastifyAdapter()
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); //permite serializar objetos para JSON (class-serializer) para funcionar o @Transform()
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0'); //permite outros hosts acessarem a aplicação
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();
