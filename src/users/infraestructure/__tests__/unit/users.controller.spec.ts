@@ -16,19 +16,18 @@ const userOutput: SignupUseCase.Output = {
 };
 
 describe('UsersController', () => {
-
   let sut = new UsersController();
   const execute = jest.fn();
 
   const mockExecute = {
-    execute
+    execute,
   } as any;
 
   beforeEach(async () => {
     sut = new UsersController();
     sut['signupUseCase'] = mockExecute;
-    sut['signinUseCase'] = mockExecute;;
-    sut['getUserUseCase'] = mockExecute;;
+    sut['signinUseCase'] = mockExecute;
+    sut['getUserUseCase'] = mockExecute;
     sut['listUsersUseCase'] = mockExecute;
     sut['updateUserUseCase'] = mockExecute;
     sut['updatePasswordUseCase'] = mockExecute;
@@ -69,9 +68,16 @@ describe('UsersController', () => {
 
   it('should update password', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, password: '456' });
-    const result = await sut.updatePassword('1', { password: '123', newPassword: '456' });
+    const result = await sut.updatePassword('1', {
+      password: '123',
+      newPassword: '456',
+    });
     expect(result).toStrictEqual({ ...userOutput, password: '456' });
-    expect(execute).toHaveBeenCalledWith({ id: '1', password: '123', newPassword: '456' });
+    expect(execute).toHaveBeenCalledWith({
+      id: '1',
+      password: '123',
+      newPassword: '456',
+    });
   });
 
   it('should delete a user', async () => {
@@ -93,14 +99,14 @@ describe('UsersController', () => {
       page: 1,
       perPage: 1,
       sortDir: 'asc',
-      filter: userInputData.name
-    })
+      filter: userInputData.name,
+    });
     expect(execute).toHaveBeenCalledWith({
       page: 1,
       perPage: 1,
       sortDir: 'asc',
-      filter: userInputData.name
-    })
+      filter: userInputData.name,
+    });
     expect(result).toStrictEqual([userOutput]);
   });
 });

@@ -23,6 +23,8 @@ import { UpdatePasswordUseCase } from '../application/usecases/update-password.u
 import { UpdatePasswordDto } from './dtos/update-password.dto copy';
 import { ListUsersDto } from './dtos/list-users.dto copy';
 import { SigninDto } from './dtos/signin.dto';
+import { UserPresenter } from './presenters/user.presenter';
+import { UserOutput } from '../application/dtos/user-output';
 
 @Controller('users')
 export class UsersController {
@@ -47,31 +49,44 @@ export class UsersController {
   @Inject(DeleteUserUseCase.UseCase)
   private deleteUserUseCase: DeleteUserUseCase.UseCase;
 
+  static userToResponse(output: UserOutput) {
+    return new UserPresenter(output);
+  }
+
   @HttpCode(201)
   @Post()
   async create(@Body() signupDto: SignupDto) {
-    return await this.signupUseCase.execute(signupDto);
+    const output = await this.signupUseCase.execute(signupDto);
+    return UsersController.userToResponse(output);
   }
 
   @HttpCode(200)
   @Post('login')
   async login(@Body() signinDto: SigninDto) {
-    return await this.signinUseCase.execute(signinDto);
+    const output = await this.signinUseCase.execute(signinDto);
+    return UsersController.userToResponse(output);
   }
 
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
-    return await this.listUsersUseCase.execute(searchParams);
+    const output = await this.listUsersUseCase.execute(searchParams);
+    const outputItems = output.items.map(UsersController.userToResponse);
+    return { ...output, items: outputItems };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.getUserUseCase.execute({ id });
+    const output = await this.getUserUseCase.execute({ id });
+    return UsersController.userToResponse(output);
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.updateUserUseCase.execute({ id, ...updateUserDto });
+    const output = await this.updateUserUseCase.execute({
+      id,
+      ...updateUserDto,
+    });
+    return UsersController.userToResponse(output);
   }
 
   @Patch(':id')
@@ -79,10 +94,11 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updatePasswordDto: UpdatePasswordDto
   ) {
-    return await this.updatePasswordUseCase.execute({
+    const output = await this.updatePasswordUseCase.execute({
       id,
       ...updatePasswordDto,
     });
+    return UsersController.userToResponse(output);
   }
 
   @HttpCode(204)
