@@ -70,8 +70,7 @@ export class UsersController {
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
     const output = await this.listUsersUseCase.execute(searchParams);
-    const outputItems = output.items.map(UsersController.userToResponse);
-    return { ...output, items: outputItems };
+    return output;
   }
 
   @Get(':id')

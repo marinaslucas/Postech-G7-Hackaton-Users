@@ -56,14 +56,18 @@ describe('UsersController', () => {
   it('should update a user', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, name: 'novo nome' });
     const presenter = await sut.update('1', { name: 'novo nome' });
-    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, name: 'novo nome' }));
+    expect(presenter).toStrictEqual(
+      new UserPresenter({ ...userOutput, name: 'novo nome' })
+    );
     expect(execute).toHaveBeenCalledWith({ id: '1', name: 'novo nome' });
   });
 
   it('should update a user', async () => {
     execute.mockResolvedValueOnce({ ...userOutput, name: 'novo nome' });
     const presenter = await sut.update('1', { name: 'novo nome' });
-    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, name: 'novo nome' }));
+    expect(presenter).toStrictEqual(
+      new UserPresenter({ ...userOutput, name: 'novo nome' })
+    );
     expect(execute).toHaveBeenCalledWith({ id: '1', name: 'novo nome' });
   });
 
@@ -73,7 +77,9 @@ describe('UsersController', () => {
       password: '123',
       newPassword: '456',
     });
-    expect(presenter).toStrictEqual(new UserPresenter({ ...userOutput, password: '456' }));
+    expect(presenter).toStrictEqual(
+      new UserPresenter({ ...userOutput, password: '456' })
+    );
     expect(execute).toHaveBeenCalledWith({
       id: '1',
       password: '123',
