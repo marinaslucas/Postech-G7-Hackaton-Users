@@ -1,4 +1,4 @@
-import { UserRepository } from '@/users/domain/repositories/user.repository';
+import { UserRepository } from '../../../domain/repositories/user.repository';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupDto } from '../../dtos/signup.dto';
@@ -7,13 +7,12 @@ import { UsersModule } from '../../users.module';
 import request from 'supertest';
 import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
-import { EnvConfigModule } from '@/shared/infraestructure/env-config/env-config.module';
-import { DatabaseModule } from '@/shared/infraestructure/database/database.module';
-import {
-  UserOutput,
-  UserOutputMapper,
-} from '@/users/application/dtos/user-output';
+import { EnvConfigModule } from '../../../../shared/infraestructure/env-config/env-config.module';
+import { DatabaseModule } from '../../../../shared/infraestructure/database/database.module';
+import { UserOutputMapper } from '@/users/application/dtos/user-output';
 import { applyGlobalConfig } from '@/global-config';
+import { UserEntity } from '@/users/domain/entities/user.entity';
+import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 
 describe('UsersController unit tests', () => {
   let app: INestApplication;
@@ -123,6 +122,20 @@ describe('UsersController unit tests', () => {
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
       expect(res.body.message).toEqual(['property xpto should not exist']);
+    });
+
+    it('should return a error with 409 code when the email is duplicated', async () => {
+      const entity = new UserEntity(userDataBuilder({ ...signupDto }));
+      await repository.insert(entity);
+      const res = await request(app.getHttpServer())
+        .post('/users')
+        .send(signupDto)
+        .expect(409)
+        .expect({
+          statusCode: 409,
+          error: 'ConflictError',
+          message: 'Email address already used',
+        });
     });
   });
 });
