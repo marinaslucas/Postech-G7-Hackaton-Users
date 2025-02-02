@@ -28,6 +28,7 @@ import {
   UserPresenter,
 } from './presenters/user.presenter';
 import { UserOutput } from '../application/dtos/user-output';
+import { AuthService } from '@/auth/infraestructure/auth.service';
 
 @Controller('users')
 export class UsersController {
@@ -52,6 +53,9 @@ export class UsersController {
   @Inject(DeleteUserUseCase.UseCase)
   private deleteUserUseCase: DeleteUserUseCase.UseCase;
 
+  @Inject(AuthService)
+  private authService: AuthService;
+
   static userToResponse(output: UserOutput) {
     return new UserPresenter(output);
   }
@@ -71,7 +75,9 @@ export class UsersController {
   @Post('login')
   async login(@Body() signinDto: SigninDto) {
     const output = await this.signinUseCase.execute(signinDto);
-    return UsersController.userToResponse(output);
+    const accessToken: { accessToken: string } =
+      await this.authService.generateJwt(output.id);
+    return accessToken;
   }
 
   @Get()

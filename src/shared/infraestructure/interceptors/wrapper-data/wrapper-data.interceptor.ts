@@ -14,13 +14,18 @@ export class WrapperDataInterceptor implements NestInterceptor {
         console.log('wrapperDataInterceptor.body', body);
         const isBodyNull = !body;
         const isMetaAttributeDefined = body && 'meta' in body;
+        const isAccessToken = body && 'accessToken' in body;
         console.log(
           'wrapperDataInterceptor.isBodyNull',
           isBodyNull,
           'wrapperDataInterceptor.isMetaAttributeDefined',
-          isMetaAttributeDefined
+          isMetaAttributeDefined,
+          'wrapperDataInterceptor.isAccessToken',
+          isAccessToken
         );
-        return isBodyNull || isMetaAttributeDefined ? body : { data: body };
+        return isBodyNull || isMetaAttributeDefined || isAccessToken
+          ? body
+          : { data: body };
       })
     );
   }
