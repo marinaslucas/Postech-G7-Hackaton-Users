@@ -27,4 +27,13 @@ describe('EnvConfigService unit tests', () => {
     const nodeEnv = sut.getNodeEnv();
     expect(nodeEnv).toBe('test');
   });
+
+  it('should return the value of the environment variable JWT_SECRET', () => {
+    const jwstSecret = sut.getJwtSecret();
+    expect(jwstSecret).toBe('test_secret');
+  });
+  it('should return the value of the environment variable JWT_EXPIRES_IN', () => {
+    const jwstSecret = sut.getJwtExpiresInSeconds();
+    expect(jwstSecret).toBe(86400);
+  });
 });
