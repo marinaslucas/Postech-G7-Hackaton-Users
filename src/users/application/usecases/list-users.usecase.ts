@@ -16,8 +16,11 @@ export namespace ListUsersUseCase {
     constructor(private userRepository: UserRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
+      console.log('usecase input', input);
       const params = new UserRepository.SearchParams(input);
+      console.log('usecase params', params);
       const searchResult = await this.userRepository.search(params);
+      console.log('usecase searchResult', searchResult);
       return this.toOutput(searchResult);
     }
 

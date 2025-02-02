@@ -45,6 +45,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
     const orderByField = sortable ? props.sort : 'createdAt';
     const orderByDir = sortable ? props.sortDir : 'desc';
     const filter = props.filter || null;
+    console.log('PROPS AQUI', props);
     const count = await this.prismaService.user.count({
       ...(props.filter && {
         where: {
@@ -71,6 +72,21 @@ export class UserPrismaRepository implements UserRepository.Repository {
       skip: props.page && props.page > 0 ? (props.page - 1) * props.perPage : 1, //quantidade a ser pulada
       take: props.perPage,
     });
+
+    console.log('UserPrismaRepository.search props', props);
+
+    console.log(
+      'UserPrismaRepository.search SearchResult',
+      new UserRepository.SearchResult({
+        items: models.map(model => UserModelMapper.toEntity(model)),
+        total: count,
+        currentPage: props.page,
+        perPage: props.perPage,
+        sort: props.sort,
+        sortDir: props.sortDir,
+        filter: props.filter,
+      })
+    );
 
     return new UserRepository.SearchResult({
       items: models.map(model => UserModelMapper.toEntity(model)),

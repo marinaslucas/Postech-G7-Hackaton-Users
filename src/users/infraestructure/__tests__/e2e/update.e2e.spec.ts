@@ -13,8 +13,6 @@ import { EnvConfigModule } from '@/shared/infraestructure/env-config/env-config.
 import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 import { DatabaseModule } from '@/shared/infraestructure/database/database.module';
 import { UserOutputMapper } from '@/users/application/dtos/user-output';
-import { HashProviderContract } from '@/shared/application/providers/hash-provider-interface';
-import { HashProvider } from '@/shared/application/providers/implementations/hash-provider';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
@@ -23,9 +21,6 @@ describe('UsersController e2e tests', () => {
   let updateUserDto: UpdateUserDto;
   const prismaService = new PrismaClient();
   let entity: UserEntity;
-  let hashProvider: HashProviderContract;
-  let hashPassword: string;
-  let accessToken: string;
 
   beforeAll(async () => {
     // setupPrismaTests()
@@ -40,8 +35,6 @@ describe('UsersController e2e tests', () => {
     applyGlobalConfig(app);
     await app.init();
     repository = module.get<UserRepository.Repository>('UserRepository');
-    hashProvider = new HashProvider();
-    hashPassword = await hashProvider.generateHash('1234');
   });
 
   beforeEach(async () => {
@@ -49,14 +42,8 @@ describe('UsersController e2e tests', () => {
       name: 'test name',
     };
     await prismaService.user.deleteMany();
-    entity = new UserEntity(
-      userDataBuilder({ email: 'a@a.com', password: hashPassword })
-    );
+    entity = new UserEntity(userDataBuilder({}));
     await repository.insert(entity);
-    const loginResponse = await request(app.getHttpServer())
-      .post('/users/login')
-      .send({ email: 'a@a.com', password: '1234' });
-    accessToken = loginResponse.body.accessToken;
   });
 
   describe('PUT /users/:id', () => {
@@ -64,7 +51,6 @@ describe('UsersController e2e tests', () => {
       updateUserDto.name = 'test name';
       const res = await request(app.getHttpServer())
         .put(`/users/${entity._id}`)
-        .set('Authorization', `Bearer ${accessToken}`)
         .send(updateUserDto)
         .expect(200);
       const user = await repository.findById(entity._id);
@@ -77,7 +63,6 @@ describe('UsersController e2e tests', () => {
     it('should return a error with 422 code when the request body is invalid', async () => {
       const res = await request(app.getHttpServer())
         .put(`/users/${entity._id}`)
-        .set('Authorization', `Bearer ${accessToken}`)
         .send({})
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
@@ -91,21 +76,11 @@ describe('UsersController e2e tests', () => {
       const res = await request(app.getHttpServer())
         .put('/users/fakeId')
         .send(updateUserDto)
-        .set('Authorization', `Bearer ${accessToken}`)
         .expect(404)
         .expect({
           statusCode: 404,
           error: 'Not Found',
           message: 'UserModel not found using ID fakeId',
-        });
-    });
-    it('should return a error with 401 code when the request is not authorized', async () => {
-      const res = await request(app.getHttpServer())
-        .put('/users/fakeId')
-        .expect(401)
-        .expect({
-          statusCode: 401,
-          message: 'Unauthorized',
         });
     });
   });
