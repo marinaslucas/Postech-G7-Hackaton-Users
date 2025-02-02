@@ -23,9 +23,14 @@ const userOutput: SignupUseCase.Output = {
 describe('UsersController', () => {
   let sut = new UsersController();
   const execute = jest.fn();
+  const generateJwt = jest.fn();
 
   const mockExecute = {
     execute,
+  } as any;
+
+  const mockGenerateJwt = {
+    generateJwt,
   } as any;
 
   beforeEach(async () => {
@@ -37,6 +42,7 @@ describe('UsersController', () => {
     sut['updateUserUseCase'] = mockExecute;
     sut['updatePasswordUseCase'] = mockExecute;
     sut['deleteUserUseCase'] = mockExecute;
+    sut['authService'] = mockGenerateJwt;
   });
 
   it('should be defined', () => {
@@ -50,10 +56,12 @@ describe('UsersController', () => {
     expect(execute).toHaveBeenCalledWith(userInputData);
   });
 
-  it('should signin a user', async () => {
+  it('should signin/authenticate a user', async () => {
+    const output = { accessToken: 'token' };
     execute.mockResolvedValueOnce(userOutput);
-    const presenter = await sut.login(userInputData);
-    expect(presenter).toStrictEqual(new UserPresenter(userOutput));
+    generateJwt.mockResolvedValueOnce(output);
+    const token = await sut.login(userInputData);
+    expect(token).toEqual(output);
     expect(execute).toHaveBeenCalledWith(userInputData);
   });
 
