@@ -8,6 +8,7 @@ import { WrapperDataInterceptor } from './shared/infraestructure/interceptors/wr
 import { ConflictErrorFilter } from './shared/infraestructure/exception-filters/conflict-error/conflict-error.filter';
 import { NotFoundErrorFilter } from './shared/infraestructure/exception-filters/not-found-error/not-found-error.filter';
 import { InvalidPasswordErrorFilter } from './shared/infraestructure/exception-filters/invalid-password-error/invalid-password-error.filter';
+import { InvalidCredentialsErrorFilter } from './shared/infraestructure/exception-filters/invalid-credentials-error/invalid-credentials-error.filter';
 
 export function applyGlobalConfig(app: INestApplication) {
   //pipes/validations:
@@ -29,6 +30,7 @@ export function applyGlobalConfig(app: INestApplication) {
   app.useGlobalFilters(
     new ConflictErrorFilter(),
     new NotFoundErrorFilter(),
-    new InvalidPasswordErrorFilter()
+    new InvalidPasswordErrorFilter(),
+    new InvalidCredentialsErrorFilter()
   );
 }
