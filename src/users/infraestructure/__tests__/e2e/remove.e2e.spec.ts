@@ -36,7 +36,6 @@ describe('UsersController e2e tests', () => {
   });
   describe('DELETE /users/:id', () => {
     it('should remove a user', async () => {
-      console.log('entiti', entity);
       const res = await request(app.getHttpServer())
         .delete(`/users/${entity._id}`)
         .expect(204)
