@@ -57,17 +57,16 @@ export class SearchParams<Filter> {
   }
 
   private set perPage(value: number) {
-    console.log(value);
-    let _perPage = value;
+    let perPage = typeof value === 'number' ? value : Number(value);
     if (
-      typeof _perPage !== 'number' ||
-      _perPage <= 0 ||
-      parseInt(_perPage as any) !== _perPage
+      typeof perPage !== 'number' ||
+      perPage <= 0 ||
+      perPage != Number(perPage)
     ) {
-      _perPage = this._perPage;
+      this._perPage = this._perPage;
+    } else {
+      this._perPage = perPage;
     }
-    this._perPage = _perPage;
-    console.log(this._perPage);
   }
 
   get sort() {

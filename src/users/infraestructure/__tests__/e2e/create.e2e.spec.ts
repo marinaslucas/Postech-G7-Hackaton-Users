@@ -14,7 +14,7 @@ import { applyGlobalConfig } from '@/global-config';
 import { UserEntity } from '@/users/domain/entities/user.entity';
 import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
 
-describe('UsersController unit tests', () => {
+describe('UsersController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: UserRepository.Repository;
@@ -72,8 +72,8 @@ describe('UsersController unit tests', () => {
         'email must be an email',
         'email should not be empty',
         'email must be a string',
-        'password should not be empty',
-        'password must be a string',
+        'Password should not be empty',
+        'Password must be a string',
       ]);
     });
 
@@ -111,8 +111,8 @@ describe('UsersController unit tests', () => {
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
       expect(res.body.message).toEqual([
-        'password should not be empty',
-        'password must be a string',
+        'Password should not be empty',
+        'Password must be a string',
       ]);
     });
     it('should return a error with 422 code with invalid field provided', async () => {

@@ -27,7 +27,7 @@ describe('UserPrismaRepository integration tests', () => {
 
   it('should throw error when entity not found by id', async () => {
     await expect(() => sut.findById('FakeId')).rejects.toThrow(
-      new NotFoundError('UserModel not found usind ID FakeId')
+      new NotFoundError('UserModel not found using ID FakeId')
     );
   });
 
@@ -97,7 +97,7 @@ describe('UserPrismaRepository integration tests', () => {
   it('should throw error on update when a entity not found', async () => {
     const entity = new UserEntity(userDataBuilder({}));
     await expect(() => sut.update(entity)).rejects.toThrow(
-      new NotFoundError(`UserModel not found usind ID ${entity._id}`)
+      new NotFoundError(`UserModel not found uning ID ${entity._id}`)
     );
   });
 
@@ -119,7 +119,7 @@ describe('UserPrismaRepository integration tests', () => {
   it('should throw error on delete when a entity not found', async () => {
     const entity = new UserEntity(userDataBuilder({}));
     await expect(() => sut.delete(entity._id)).rejects.toThrow(
-      new NotFoundError(`UserModel not found usind ID ${entity._id}`)
+      new NotFoundError(`UserModel not found using ID ${entity._id}`)
     );
   });
   it('should delete a entity', async () => {

@@ -76,6 +76,7 @@ export class UsersController {
 
   @Get()
   async search(@Query() searchParams: ListUsersDto) {
+    console.log('users controller searchParams', searchParams);
     const output = await this.listUsersUseCase.execute(searchParams);
     return UsersController.listUsersToResponse(output);
   }
