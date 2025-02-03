@@ -17,13 +17,6 @@ jobs:
           cache: 'npm'
       
       - run: npm ci # instalar as dependencias sem interação
-      - run: npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma
-        env: 
-          PORT: 3000
-          NODE_ENV: test
-          DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
-          JWT_SECRET: test_secret
-          JWT_EXPIRES_IN: 86400
 
       - run: npm run test:unit # rodar os testes unitarios
         env: 
