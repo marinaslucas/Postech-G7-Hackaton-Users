@@ -17,7 +17,12 @@ jobs:
           cache: 'npm'
       
       - run: npm ci # instalar as dependencias sem interação
-      - run: npx dotenv-cli -e .env.test -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma
+      - run: npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma
+        env: 
+          PORT: 3000
+          NODE_ENV: test
+          JWT_secret: fake_secret
+          DATABASE_URL: fake_database_url
 
       - run: npm run test:unit # rodar os testes unitarios
         env: 
