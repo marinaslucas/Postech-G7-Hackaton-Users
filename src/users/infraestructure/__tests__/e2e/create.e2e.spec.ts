@@ -72,8 +72,8 @@ describe('UsersController e2e tests', () => {
         'email must be an email',
         'email should not be empty',
         'email must be a string',
-        'Password should not be empty',
-        'Password must be a string',
+        'password should not be empty',
+        'password must be a string',
       ]);
     });
 
@@ -111,8 +111,8 @@ describe('UsersController e2e tests', () => {
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
       expect(res.body.message).toEqual([
-        'Password should not be empty',
-        'Password must be a string',
+        'password should not be empty',
+        'password must be a string',
       ]);
     });
     it('should return a error with 422 code with invalid field provided', async () => {
