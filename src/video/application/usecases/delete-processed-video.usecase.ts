@@ -3,7 +3,7 @@ import { VideoRepository } from '../../domain/repositories/video.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
-export namespace DeleteVideoUseCase {
+export namespace DeleteProcessedVideoUseCase {
   export type Input = { id: string };
   export type Output = void;
 

@@ -3,7 +3,8 @@ import { VideoRepository } from '../../domain/repositories/video.repository';
 import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
-export namespace UploadVideoUseCase {
+//toBeImplemented
+export namespace UploadProcessedVideoUseCase {
   export type Input = {
     file: Express.Multer.File;
     destination: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVideoDto } from './dtos/create-video.dto';
-import { UpdateVideoDto } from './dtos/update-video.dto';
+import { CreateVideoDto } from './dtos/upload-video.dto';
+import { UpdateVideoDto } from './dtos/upload-processed-video.dto';
 
 @Injectable()
 export class VideoService {

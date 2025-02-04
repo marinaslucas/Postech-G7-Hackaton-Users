@@ -12,7 +12,7 @@ export namespace GetVideoUseCase {
   export type Output = VideoOutput;
 
   export class UseCase implements DefaultUseCase<Input, Output> {
-    constructor(private videoRepository: VideoRepository.Repository) {}
+    constructor(private videoRepository: VideoRepository.Repository) { }
 
     async execute(input: Input): Promise<Output> {
       const { id } = input;

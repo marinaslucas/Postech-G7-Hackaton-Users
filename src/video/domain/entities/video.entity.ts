@@ -14,8 +14,8 @@ export type VideoProps = {
 export class VideoEntity extends Entity<VideoProps> {
   constructor(props: VideoProps, id?: string) {
     VideoEntity.validate(props);
-    super(props, id);
-    this.props.createdAt = props.createdAt ?? new Date();
+        super(props, id);
+        this.props.createdAt = props.createdAt ?? new Date();
   }
 
   static validate(data: VideoProps) {
@@ -24,6 +24,10 @@ export class VideoEntity extends Entity<VideoProps> {
     if (!isValid) {
       throw new EntityValidationError(validator.errors);
     }
+  }
+
+  updateStatus(value: 'processing' | 'completed' | 'failed' | 'retrieved') {
+    this.props.status = value;
   }
 
   get base64(): string {
@@ -48,9 +52,5 @@ export class VideoEntity extends Entity<VideoProps> {
 
   get userEmail(): string {
     return this.props.userEmail;
-  }
-
-  updateStatus(value: 'processing' | 'completed' | 'failed' | 'retrieved') {
-    this.props.status = value;
   }
 }
