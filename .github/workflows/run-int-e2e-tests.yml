@@ -28,6 +28,9 @@ jobs:
       - run: npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma
         env:
           DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
+      - run: npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma
+        env:
+          DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
       - run: npm run test:int
         env:
           PORT: 3000
