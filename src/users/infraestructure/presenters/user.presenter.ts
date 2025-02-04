@@ -1,9 +1,7 @@
-import { UserOutput } from '@/users/application/dtos/user-output';
-import { UserEntity } from '../../domain/entities/user.entity';
+import { UserOutput } from '../../application/dtos/user-output';
 import { Transform } from 'class-transformer';
-import { PaginationPresenterProps } from '@/shared/infraestructure/presenters/pagination.presenter';
-import { CollectionPresenter } from '@/shared/infraestructure/presenters/collection.presenter';
-import { ListUsersUseCase } from '@/users/application/usecases/list-users.usecase';
+import { CollectionPresenter } from '../../../shared/infraestructure/presenters/collection.presenter';
+import { ListUsersUseCase } from '../../application/usecases/list-users.usecase';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserPresenter {

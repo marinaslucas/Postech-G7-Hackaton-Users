@@ -6,7 +6,6 @@ import { HashProvider } from '../../../../../shared/application/providers/implem
 import { InvalidPasswordError } from '../../../../../shared/application/errors/invalid-password-error';
 import { UserEntity } from '../../../../domain/entities/user.entity';
 import { userDataBuilder } from '../../../../domain/testing/helpers/user-data-builder';
-import { HashProviderContract } from '@/shared/application/providers/hash-provider-interface';
 
 describe('UpdatePasswordUseCase unit tests', () => {
   let sut: UpdatePasswordUseCase.UseCase;

@@ -1,4 +1,4 @@
-import { EnvConfigService } from '@/shared/infraestructure/env-config/env-config.service';
+import { EnvConfigService } from '../../shared/infraestructure/env-config/env-config.service';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 

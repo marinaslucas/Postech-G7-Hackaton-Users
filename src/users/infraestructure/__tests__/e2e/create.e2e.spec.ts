@@ -9,10 +9,10 @@ import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
 import { EnvConfigModule } from '../../../../shared/infraestructure/env-config/env-config.module';
 import { DatabaseModule } from '../../../../shared/infraestructure/database/database.module';
-import { UserOutputMapper } from '@/users/application/dtos/user-output';
-import { applyGlobalConfig } from '@/global-config';
-import { UserEntity } from '@/users/domain/entities/user.entity';
-import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
+import { UserOutputMapper } from '../../../application/dtos/user-output';
+import { applyGlobalConfig } from '../../../../global-config';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import { userDataBuilder } from '../../../domain/testing/helpers/user-data-builder';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;

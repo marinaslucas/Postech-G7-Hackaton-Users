@@ -1,4 +1,4 @@
-import { InvalidCredentialsError } from '@/shared/application/errors/invalid-credentials-error';
+import { InvalidCredentialsError } from '../../../application/errors/invalid-credentials-error';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 

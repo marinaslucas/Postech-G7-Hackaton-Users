@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { EnvConfigService } from '@/shared/infraestructure/env-config/env-config.service';
+import { EnvConfigService } from '../../../shared/infraestructure/env-config/env-config.service';
 import { ConfigService } from '@nestjs/config';
-import { EnvConfigModule } from '@/shared/infraestructure/env-config/env-config.module';
+import { EnvConfigModule } from '../../../shared/infraestructure/env-config/env-config.module';
 
 describe('AuthService unit tests', () => {
   let sut: AuthService;

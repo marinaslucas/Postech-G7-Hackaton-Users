@@ -1,4 +1,4 @@
-import { ConflictError } from '@/shared/domain/errors/conflict-error';
+import { ConflictError } from '../../../../../shared/domain/errors/conflict-error';
 import { NotFoundError } from '../../../../../shared/domain/errors/not-found-error';
 import { PrismaService } from '../../../../../shared/infraestructure/database/prisma/prisma.service';
 import { UserEntity } from '../../../../domain/entities/user.entity';

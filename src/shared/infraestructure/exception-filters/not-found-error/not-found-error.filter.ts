@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/shared/domain/errors/not-found-error';
+import { NotFoundError } from '../../../../shared/domain/errors/not-found-error';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 @Catch(NotFoundError)

@@ -1,5 +1,5 @@
-import { SortDirection } from '@/shared/domain/repositories/searchable-repository-contract';
-import { ListUsersUseCase } from '@/users/application/usecases/list-users.usecase';
+import { SortDirection } from '../../../shared/domain/repositories/searchable-repository-contract';
+import { ListUsersUseCase } from '../../application/usecases/list-users.usecase';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 

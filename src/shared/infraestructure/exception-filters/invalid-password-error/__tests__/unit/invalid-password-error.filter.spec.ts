@@ -2,7 +2,7 @@ import { InvalidPasswordErrorFilter } from '../../invalid-password-error.filter'
 import { Controller, Get, INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { InvalidPasswordError } from '@/shared/application/errors/invalid-password-error';
+import { InvalidPasswordError } from '../../../../../../shared/application/errors/invalid-password-error';
 
 @Controller('stub')
 class StubController {

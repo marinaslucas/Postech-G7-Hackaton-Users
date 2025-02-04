@@ -1,5 +1,5 @@
 import { Controller, Get, INestApplication } from '@nestjs/common';
-import { InvalidCredentialsError } from '@/shared/application/errors/invalid-credentials-error';
+import { InvalidCredentialsError } from '../../../../application/errors/invalid-credentials-error';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { InvalidCredentialsErrorFilter } from '../invalid-credentials-error.filter';
