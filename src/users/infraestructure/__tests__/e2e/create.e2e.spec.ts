@@ -9,10 +9,10 @@ import { UsersController } from '../../users.controller';
 import { instanceToPlain } from 'class-transformer';
 import { EnvConfigModule } from '../../../../shared/infraestructure/env-config/env-config.module';
 import { DatabaseModule } from '../../../../shared/infraestructure/database/database.module';
-import { UserOutputMapper } from '@/users/application/dtos/user-output';
-import { applyGlobalConfig } from '@/global-config';
-import { UserEntity } from '@/users/domain/entities/user.entity';
-import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
+import { UserOutputMapper } from '../../../application/dtos/user-output';
+import { applyGlobalConfig } from '../../../../global-config';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import { userDataBuilder } from '../../../domain/testing/helpers/user-data-builder';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
@@ -72,8 +72,8 @@ describe('UsersController e2e tests', () => {
         'email must be an email',
         'email should not be empty',
         'email must be a string',
-        'Password should not be empty',
-        'Password must be a string',
+        'password should not be empty',
+        'password must be a string',
       ]);
     });
 
@@ -111,8 +111,8 @@ describe('UsersController e2e tests', () => {
         .expect(422);
       expect(res.body.error).toBe('Unprocessable Entity');
       expect(res.body.message).toEqual([
-        'Password should not be empty',
-        'Password must be a string',
+        'password should not be empty',
+        'password must be a string',
       ]);
     });
     it('should return a error with 422 code with invalid field provided', async () => {

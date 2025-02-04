@@ -2,7 +2,7 @@ import { Controller, Get, INestApplication } from '@nestjs/common';
 import { NotFoundErrorFilter } from '../../not-found-error.filter';
 import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundError } from '@/shared/domain/errors/not-found-error';
+import { NotFoundError } from '../../../../../../shared/domain/errors/not-found-error';
 @Controller('stub')
 class StubController {
   @Get()

@@ -57,16 +57,15 @@ export class SearchParams<Filter> {
   }
 
   private set perPage(value: number) {
-    let perPage = typeof value === 'number' ? value : Number(value);
+    let _perPage = value === (true as any) ? this._perPage : +value;
     if (
-      typeof perPage !== 'number' ||
-      perPage <= 0 ||
-      perPage != Number(perPage)
+      Number.isNaN(_perPage) ||
+      _perPage <= 0 ||
+      parseInt(_perPage as any) !== _perPage
     ) {
-      this._perPage = this._perPage;
-    } else {
-      this._perPage = perPage;
+      _perPage = this._perPage;
     }
+    this._perPage = _perPage;
   }
 
   get sort() {

@@ -1,4 +1,4 @@
-import { ListUsersUseCase } from '@/users/application/usecases/list-users.usecase';
+import { ListUsersUseCase } from '../../../application/usecases/list-users.usecase';
 import { SignupUseCase } from '../../../application/usecases/signup-users.usecase';
 import {
   UserCollectionPresenter,

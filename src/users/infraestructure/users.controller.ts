@@ -29,8 +29,8 @@ import {
   UserPresenter,
 } from './presenters/user.presenter';
 import { UserOutput } from '../application/dtos/user-output';
-import { AuthService } from '@/auth/infraestructure/auth.service';
-import { AuthGuard } from '@/auth/infraestructure/auth.guard';
+import { AuthService } from '../../auth/infraestructure/auth.service';
+import { AuthGuard } from '../../auth/infraestructure/auth.guard';
 import {
   ApiBearerAuth,
   ApiResponse,

@@ -1,4 +1,4 @@
-import { UpdateUserUseCase } from '@/users/application/usecases/update-user.usecase';
+import { UpdateUserUseCase } from '../../application/usecases/update-user.usecase';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 

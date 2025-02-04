@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -17,7 +20,8 @@
     "nestjs:generate:service": "nest g service entitye/infraestructuree",
     "nestjs:generate:controller": "nest g controller entity/infraestructure",
     "nestjs:generate:filter": "nest g filter shared/infraestructure/exception-filters/new-filter",
-    "test": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.config.ts",
+    "test": "npx dotenv-cli -e .env.test -- jest --runInBand",
+    "test:unit": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.unit.config.ts",
     "test:unit:users-controller": "npm run test users.controller",
     "test:unit:wrapper-data": "npm run test wrapper-data.interceptor",
     "test:unit:conflict-error-filter": "npm run test conflict-error.filter",
@@ -36,8 +40,9 @@
     "test:e2e:update-password": "npm run test:e2e updatepassword.e2e",
     "test:e2e:login": "npm run test:e2e login.e2e",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "npx dotenv-cli -e .env.test -- jest --coverage --runInBand --config ./jest.config.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "prisma:generate:test": "npx dotenv-cli -e .env.test -- npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:migrate:test": "npx dotenv-cli -e .env.test -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:generate:development": "npx dotenv-cli -e .env.development -- npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:migrate:development": "npx dotenv-cli -e .env.development -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma",

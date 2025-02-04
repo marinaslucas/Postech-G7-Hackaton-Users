@@ -1,7 +1,7 @@
 import { Controller, Get, INestApplication } from '@nestjs/common';
 import { ConflictErrorFilter } from '../../conflict-error.filter';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConflictError } from '@/shared/domain/errors/conflict-error';
+import { ConflictError } from '../../../../../domain/errors/conflict-error';
 import request from 'supertest';
 
 @Controller('stub')

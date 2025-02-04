@@ -12,7 +12,7 @@ import { UpdatePasswordUseCase } from '../application/usecases/update-password.u
 import { DeleteUserUseCase } from '../application/usecases/delete-user.usecase';
 import { PrismaService } from '../../shared/infraestructure/database/prisma/prisma.service';
 import { UserPrismaRepository } from './database/prisma/repositories/user-prisma.repository';
-import { AuthModule } from '@/auth/infraestructure/auth.module';
+import { AuthModule } from '../../auth/infraestructure/auth.module';
 
 @Module({
   imports: [AuthModule],

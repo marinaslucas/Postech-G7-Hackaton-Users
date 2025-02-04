@@ -1,5 +1,4 @@
 import { FieldsErrors } from '../validators/validator-fields.interface';
-// {name: ['name must be a string']}
 
 export class ValidationError extends Error {}
 

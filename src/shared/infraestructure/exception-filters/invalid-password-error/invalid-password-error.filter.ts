@@ -1,4 +1,4 @@
-import { InvalidPasswordError } from '@/shared/application/errors/invalid-password-error';
+import { InvalidPasswordError } from '../../../application/errors/invalid-password-error';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 

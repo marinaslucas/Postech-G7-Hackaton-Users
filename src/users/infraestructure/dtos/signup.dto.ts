@@ -1,4 +1,4 @@
-import { SignupUseCase } from '@/users/application/usecases/signup-users.usecase';
+import { SignupUseCase } from '../../application/usecases/signup-users.usecase';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 

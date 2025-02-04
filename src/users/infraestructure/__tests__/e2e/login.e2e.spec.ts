@@ -7,11 +7,11 @@ import { UsersModule } from '../../users.module';
 import request from 'supertest';
 import { EnvConfigModule } from '../../../../shared/infraestructure/env-config/env-config.module';
 import { DatabaseModule } from '../../../../shared/infraestructure/database/database.module';
-import { applyGlobalConfig } from '@/global-config';
-import { UserEntity } from '@/users/domain/entities/user.entity';
-import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import { HashProviderContract } from '@/shared/application/providers/hash-provider-interface';
-import { HashProvider } from '@/shared/application/providers/implementations/hash-provider';
+import { applyGlobalConfig } from '../../../../global-config';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import { userDataBuilder } from '../../../domain/testing/helpers/user-data-builder';
+import { HashProviderContract } from '../../../../shared/application/providers/hash-provider-interface';
+import { HashProvider } from '../../../../shared/application/providers/implementations/hash-provider';
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication;

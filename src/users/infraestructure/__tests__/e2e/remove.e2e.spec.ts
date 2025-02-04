@@ -1,16 +1,16 @@
-import { UserRepository } from '@/users/domain/repositories/user.repository';
+import { UserRepository } from '../../../domain/repositories/user.repository';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
 import { UsersModule } from '../../users.module';
 import request from 'supertest';
-import { applyGlobalConfig } from '@/global-config';
-import { UserEntity } from '@/users/domain/entities/user.entity';
-import { EnvConfigModule } from '@/shared/infraestructure/env-config/env-config.module';
-import { DatabaseModule } from '@/shared/infraestructure/database/database.module';
-import { userDataBuilder } from '@/users/domain/testing/helpers/user-data-builder';
-import { HashProviderContract } from '@/shared/application/providers/hash-provider-interface';
-import { HashProvider } from '@/shared/application/providers/implementations/hash-provider';
+import { applyGlobalConfig } from '../../../../global-config';
+import { UserEntity } from '../../../domain/entities/user.entity';
+import { EnvConfigModule } from '../../../../shared/infraestructure/env-config/env-config.module';
+import { DatabaseModule } from '../../../../shared/infraestructure/database/database.module';
+import { userDataBuilder } from '../../../domain/testing/helpers/user-data-builder';
+import { HashProviderContract } from '../../../../shared/application/providers/hash-provider-interface';
+import { HashProvider } from '../../../../shared/application/providers/implementations/hash-provider';
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
