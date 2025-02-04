@@ -1,28 +1,53 @@
-name: CI - Unit Tests
+name: CI
 
-on: [push]
+on:
+  push:
+    branches: [ main, master, prod ]
+  pull_request:
+    branches: [ main, master, prod ]
 
 jobs:
-  run-unit-tests:
-    name: Run Unit Tests
+  test:
     runs-on: ubuntu-latest
 
-    #definindo os passos necessarios para baixar o app e rodar os testes
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3 # baixar o codigo do app no ubuntu
-      - uses: actions/setup-node@v3 # configurar o node no ubuntu
-        with: 
-          node-version: 20
-          cache: 'npm'
-      
-      - run: npm ci # instalar as dependencias sem interação
+    - uses: actions/checkout@v3
 
-      - run: npm run test:unit # rodar os testes unitarios
-        env: 
-          PORT: 3000
-          NODE_ENV: test
-          DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
-          JWT_SECRET: test_secret
-          JWT_EXPIRES_IN: 86400
-        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Generate Prisma Client
+      run: npx prisma generate
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+
+    - name: Run Prisma Migrations
+      run: npx prisma migrate deploy
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+
+    - name: Run tests
+      run: npm run test:unit
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
