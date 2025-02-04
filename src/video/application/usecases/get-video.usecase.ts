@@ -4,7 +4,7 @@ import { BadRequestError } from '../../../shared/application/errors/bad-request-
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 import { VideoEntity } from '../../domain/entities/video.entity';
 
-export namespace GetVideoByIdUseCase {
+export namespace GetVideoUseCase {
   export type Input = {
     id: string;
   };

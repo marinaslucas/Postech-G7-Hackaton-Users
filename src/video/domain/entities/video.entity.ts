@@ -3,7 +3,6 @@ import { EntityValidationError } from '../../../shared/domain/errors/validation-
 import { VideoValidatorFactory } from '../validators/video.validator';
 
 export type VideoProps = {
-  id: string;
   title: string;
   createdAt?: Date;
   status: 'processing' | 'completed' | 'failed' | 'retrieved';

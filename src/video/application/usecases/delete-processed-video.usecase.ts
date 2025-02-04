@@ -1,7 +1,7 @@
-import { GoogleCloudStorageService } from '../../../../shared/infraestructure/storage/implementations/google-cloud-storage';
-import { VideoRepository } from '../../../domain/repositories/video.repository';
-import { BadRequestError } from '../../../../shared/application/errors/bad-request-error';
-import { UseCase as DefaultUseCase } from '../../../../shared/application/providers/usecases/use-case';
+import { GoogleCloudStorageService } from '../../../shared/infraestructure/storage/implementations/google-cloud-storage';
+import { VideoRepository } from '../../domain/repositories/video.repository';
+import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
+import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
 export namespace DeleteVideoUseCase {
   export type Input = { id: string };
@@ -20,8 +20,8 @@ export namespace DeleteVideoUseCase {
       const video = await this.videoRepository.findById(input.id); //já emite not found error
 
       const videoFileName = `${video.id}.zip`;
+      
       await this.storageService.delete(videoFileName);
-
       await this.videoRepository.delete(input.id);
     }
   }

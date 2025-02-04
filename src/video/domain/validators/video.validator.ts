@@ -24,7 +24,7 @@ export class VideoRules {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['processing', 'completed', 'failed'])
+  @IsIn(['processing', 'completed', 'failed', 'retrieved'])
   status: string;
 
   @IsString()

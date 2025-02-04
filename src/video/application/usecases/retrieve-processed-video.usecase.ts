@@ -1,7 +1,7 @@
-import { GoogleCloudStorageService } from '../../../../shared/infraestructure/storage/implementations/google-cloud-storage';
-import { VideoRepository } from '../../../domain/repositories/video.repository';
-import { BadRequestError } from '../../../../shared/application/errors/bad-request-error';
-import { UseCase as DefaultUseCase } from '../../../../shared/application/providers/usecases/use-case';
+import { GoogleCloudStorageService } from '../../../shared/infraestructure/storage/implementations/google-cloud-storage';
+import { VideoRepository } from '../../domain/repositories/video.repository';
+import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
+import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
 export namespace RetrieveVideoUseCase {
   export type Input = { id: string };

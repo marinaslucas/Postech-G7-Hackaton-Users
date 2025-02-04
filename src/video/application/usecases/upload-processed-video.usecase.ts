@@ -1,7 +1,7 @@
-import { GoogleCloudStorageService } from '../../../../shared/infraestructure/storage/implementations/google-cloud-storage';
-import { VideoRepository } from '../../../domain/repositories/video.repository';
-import { BadRequestError } from '../../../../shared/application/errors/bad-request-error';
-import { UseCase as DefaultUseCase } from '../../../../shared/application/providers/usecases/use-case';
+import { GoogleCloudStorageService } from '../../../shared/infraestructure/storage/implementations/google-cloud-storage';
+import { VideoRepository } from '../../domain/repositories/video.repository';
+import { BadRequestError } from '../../../shared/application/errors/bad-request-error';
+import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 
 export namespace UploadVideoUseCase {
   export type Input = {
@@ -16,7 +16,8 @@ export namespace UploadVideoUseCase {
       private readonly storageService: GoogleCloudStorageService,
       private readonly videoRepository: VideoRepository.Repository
     ) {}
-
+    //toBeImplemented
+    //faz o upload para o storage
     async execute(input: Input): Promise<Output> {
       if (!input?.file || !input?.destination) {
         throw new BadRequestError('Input data not provided');
