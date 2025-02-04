@@ -42,6 +42,7 @@
     "test:watch": "jest --watch",
     "test:cov": "npx dotenv-cli -e .env.test -- jest --coverage --runInBand --config ./jest.config.ts",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "prisma:generate:test": "npx dotenv-cli -e .env.test -- npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:migrate:test": "npx dotenv-cli -e .env.test -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:generate:development": "npx dotenv-cli -e .env.development -- npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
     "prisma:migrate:development": "npx dotenv-cli -e .env.development -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma",
