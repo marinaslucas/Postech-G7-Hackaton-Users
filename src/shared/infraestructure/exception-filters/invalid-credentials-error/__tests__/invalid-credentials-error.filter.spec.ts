@@ -1,8 +1,14 @@
 import { Controller, Get, INestApplication } from '@nestjs/common';
-import { InvalidCredentialsError } from '../../../../application/errors/invalid-credentials-error';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { InvalidCredentialsErrorFilter } from '../invalid-credentials-error.filter';
+
+class InvalidCredentialsError extends Error {
+  constructor(public message: string) {
+    super(message);
+    this.name = 'InvalidCredentialsError';
+  }
+}
 
 @Controller('stub')
 class StubController {
