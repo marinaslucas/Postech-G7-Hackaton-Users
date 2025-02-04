@@ -25,7 +25,7 @@ jobs:
           node-version: 18
           cache: 'npm'
       - run: npm ci  
-      - run: npx prisma generate --schema ./src/shared/infrastructure/database/prisma/schema.prisma
+      - run: npx prisma generate --schema ./src/shared/infraestructure/database/prisma/schema.prisma
         env:
           DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
       - run: npm run test:int
@@ -42,3 +42,4 @@ jobs:
           JWT_SECRET: test_secret
           JWT_EXPIRES_IN: 86400
           DATABASE_URL: "postgresql://postgres:docker@localhost:5432/projectdb?schema=test"
+          
