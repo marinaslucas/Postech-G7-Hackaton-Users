@@ -17,19 +17,19 @@ export class VideoPrismaRepository implements VideoRepository.Repository {
     const orderByDir = sortable ? props.sortDir : 'desc';
     const filter = props.filter || null;
     const count = await this.prismaService.video.count({
-        ...(props.filter && {
-          where: {
-            userId: {
-              equals: filter
-            },
+      ...(props.filter && {
+        where: {
+          userId: {
+            equals: filter,
           },
-        }),
-      });
+        },
+      }),
+    });
     const models = await this.prismaService.video.findMany({
       ...(props.filter && {
         where: {
           userId: {
-            equals: filter
+            equals: filter,
           },
         },
       }),

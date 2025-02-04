@@ -35,28 +35,43 @@ import { UpdateVideoUseCase } from '../application/usecases/update-video';
         videoRepository: VideoRepository.Repository,
         storageService: GoogleCloudStorageService
       ) => {
-        return new DeleteProcessedVideoUseCase.UseCase(storageService, videoRepository);
+        return new DeleteProcessedVideoUseCase.UseCase(
+          storageService,
+          videoRepository
+        );
       },
       inject: ['VideoRepository', 'StorageService'],
     },
     {
       provide: RetrieveProcessedVideoUseCase.UseCase,
-      useFactory: (videoRepository: VideoRepository.Repository,
-        storageService: GoogleCloudStorageService) => {
-        return new RetrieveProcessedVideoUseCase.UseCase(storageService, videoRepository);
+      useFactory: (
+        videoRepository: VideoRepository.Repository,
+        storageService: GoogleCloudStorageService
+      ) => {
+        return new RetrieveProcessedVideoUseCase.UseCase(
+          storageService,
+          videoRepository
+        );
       },
       inject: ['VideoRepository'],
     },
     {
       provide: UploadProcessedVideoUseCase.UseCase,
-      useFactory: (videoRepository: VideoRepository.Repository, storageService: GoogleCloudStorageService) => {
-        return new UploadProcessedVideoUseCase.UseCase(storageService, videoRepository);
+      useFactory: (
+        videoRepository: VideoRepository.Repository,
+        storageService: GoogleCloudStorageService
+      ) => {
+        return new UploadProcessedVideoUseCase.UseCase(
+          storageService,
+          videoRepository
+        );
       },
       inject: ['VideoRepository', 'StorageService'],
     },
     {
       provide: UploadVideoUseCase.UseCase,
-      useFactory: (videoRepository: VideoRepository.Repository,
+      useFactory: (
+        videoRepository: VideoRepository.Repository,
         authService: AuthService
       ) => {
         return new UploadVideoUseCase.UseCase(videoRepository, authService);
@@ -93,4 +108,4 @@ import { UpdateVideoUseCase } from '../application/usecases/update-video';
     },
   ],
 })
-export class VideoModule { }
+export class VideoModule {}

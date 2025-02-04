@@ -14,8 +14,8 @@ export type VideoProps = {
 export class VideoEntity extends Entity<VideoProps> {
   constructor(props: VideoProps, id?: string) {
     VideoEntity.validate(props);
-        super(props, id);
-        this.props.createdAt = props.createdAt ?? new Date();
+    super(props, id);
+    this.props.createdAt = props.createdAt ?? new Date();
   }
 
   static validate(data: VideoProps) {

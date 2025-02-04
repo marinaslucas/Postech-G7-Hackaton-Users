@@ -1,9 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
-import { UploadProcessedVideoUseCase } from "src/video/application/usecases/upload-processed-video.usecase";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { UploadProcessedVideoUseCase } from 'src/video/application/usecases/upload-processed-video.usecase';
 
 //toBeImplemented
-export class UploadProcessedVideoDto implements UploadProcessedVideoUseCase.Input {
+export class UploadProcessedVideoDto
+  implements UploadProcessedVideoUseCase.Input
+{
   @ApiProperty({
     description: 'Video ID',
   })

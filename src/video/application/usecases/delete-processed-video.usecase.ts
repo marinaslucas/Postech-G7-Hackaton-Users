@@ -20,7 +20,7 @@ export namespace DeleteProcessedVideoUseCase {
       const video = await this.videoRepository.findById(input.id); //já emite not found error
 
       const videoFileName = `${video.id}.zip`;
-      
+
       await this.storageService.delete(videoFileName);
       await this.videoRepository.delete(input.id);
     }

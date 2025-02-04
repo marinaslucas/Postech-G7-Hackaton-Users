@@ -14,9 +14,7 @@ export namespace UpdateVideoUseCase {
   export type Output = VideoOutput;
 
   export class UseCase implements DefaultUseCase<Input, Output> {
-    constructor(
-      private videoRepository: VideoRepository.Repository,
-    ) {}
+    constructor(private videoRepository: VideoRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
       const { id, status } = input;
@@ -26,9 +24,7 @@ export namespace UpdateVideoUseCase {
       }
 
       if (!status) {
-        throw new InvalidPasswordError(
-          'Status must be provided'
-        );
+        throw new InvalidPasswordError('Status must be provided');
       }
 
       const videoEntity = await this.videoRepository.findById(id);

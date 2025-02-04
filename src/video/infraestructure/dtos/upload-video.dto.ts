@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
-import { UploadVideoUseCase } from "src/video/application/usecases/upload-video.usecase";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { UploadVideoUseCase } from 'src/video/application/usecases/upload-video.usecase';
 
 export class UploadVideoDto implements UploadVideoUseCase.Input {
   @ApiProperty({
@@ -9,7 +9,6 @@ export class UploadVideoDto implements UploadVideoUseCase.Input {
   @IsString()
   @IsNotEmpty()
   file: Express.Multer.File;
-
 
   @ApiProperty({
     description: 'Token JWT do usuário',
