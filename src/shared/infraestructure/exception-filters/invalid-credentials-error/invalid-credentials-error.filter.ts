@@ -1,6 +1,6 @@
-import { InvalidCredentialsError } from '../../../application/errors/invalid-credentials-error';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
+import { InvalidCredentialsError } from '../../../../shared/application/errors/Invalid-credentials-error';
 
 @Catch(InvalidCredentialsError)
 export class InvalidCredentialsErrorFilter implements ExceptionFilter {

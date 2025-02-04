@@ -11,6 +11,7 @@ import { DatabaseModule } from '../../../../shared/infraestructure/database/data
 import { userDataBuilder } from '../../../domain/testing/helpers/user-data-builder';
 import { HashProviderContract } from '../../../../shared/application/providers/hash-provider-interface';
 import { HashProvider } from '../../../../shared/application/providers/implementations/hash-provider';
+import { InvalidCredentialsError } from '../../../../shared/application/errors/Invalid-credentials-error';
 describe('UsersController e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
@@ -20,6 +21,7 @@ describe('UsersController e2e tests', () => {
   let hashProvider: HashProviderContract;
   let hashPassword: string;
   let accessToken: string;
+  let InvalidCredentialsErrorFilter: InvalidCredentialsError;
 
   beforeAll(async () => {
     //setupPrismaTests()
@@ -28,6 +30,7 @@ describe('UsersController e2e tests', () => {
         EnvConfigModule,
         UsersModule,
         DatabaseModule.forTest(prismaService),
+        InvalidCredentialsError
       ],
     }).compile();
     app = module.createNestApplication();

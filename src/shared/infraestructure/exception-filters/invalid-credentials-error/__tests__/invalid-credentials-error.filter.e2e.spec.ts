@@ -2,7 +2,7 @@ import { Controller, Get, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { InvalidCredentialsErrorFilter } from '../invalid-credentials-error.filter';
-import { InvalidCredentialsError } from 'src/shared/application/errors/Invalid-credentials-error';
+import { InvalidCredentialsError } from '../../../../application/errors/Invalid-credentials-error';
 
 @Controller('stub')
 class StubController {
