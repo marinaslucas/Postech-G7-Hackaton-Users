@@ -1,89 +1,96 @@
-// import { Module } from '@nestjs/common';
-// import { UsersController } from './users.controller';
-// import { SignupUseCase } from '../application/usecases/signup-users.usecase';
-// import { UserInMemoryRepository } from './database/in-memory/repositories/user-in-memory.repository';
-// import { HashProvider } from '../..//shared/application/providers/implementations/hash-provider';
-// import { UserRepository } from '../domain/repositories/user.repository';
-// import { SigninUseCase } from '../application/usecases/signin-users.usecase';
-// import { GetUserUseCase } from '../application/usecases/get-user.usecase';
-// import { ListUsersUseCase } from '../application/usecases/list-users.usecase';
-// import { UpdateUserUseCase } from '../application/usecases/update-user.usecase';
-// import { UpdatePasswordUseCase } from '../application/usecases/update-password.usecase';
-// import { DeleteUserUseCase } from '../application/usecases/delete-user.usecase';
-// import { PrismaService } from '../../shared/infraestructure/database/prisma/prisma.service';
-// import { UserPrismaRepository } from './database/prisma/repositories/user-prisma.repository';
-// import { AuthModule } from '../../auth/infraestructure/auth.module';
+import { Module } from '@nestjs/common';
+import { VideosController } from './video.controller';
+import { VideoRepository } from '../domain/repositories/video.repository';
+import { VideoPrismaRepository } from './database/prisma/repositories/video-prisma.repository';
 
-// @Module({
-//   imports: [AuthModule],
-//   controllers: [UsersController],
-//   providers: [
-//     { provide: 'PrismaService', useClass: PrismaService },
-//     {
-//       provide: 'UserRepository',
-//       useFactory: (prismaService: PrismaService) =>
-//         new UserPrismaRepository(prismaService),
-//       inject: ['PrismaService'],
-//     },
-//     { provide: 'HashProvider', useClass: HashProvider },
-//     {
-//       provide: SignupUseCase.UseCase, //nome no container
-//       useFactory: (
-//         userRepository: UserRepository.Repository,
-//         hashProvider: HashProvider
-//       ) => {
-//         return new SignupUseCase.UseCase(userRepository, hashProvider);
-//       },
-//       inject: ['UserRepository', 'HashProvider'],
-//     },
-//     {
-//       provide: SigninUseCase.UseCase,
-//       useFactory: (
-//         userRepository: UserRepository.Repository,
-//         hashProvider: HashProvider
-//       ) => {
-//         return new SigninUseCase.UseCase(userRepository, hashProvider);
-//       },
-//       inject: ['UserRepository', 'HashProvider'],
-//     },
-//     {
-//       provide: GetUserUseCase.UseCase,
-//       useFactory: (userRepository: UserRepository.Repository) => {
-//         return new GetUserUseCase.UseCase(userRepository);
-//       },
-//       inject: ['UserRepository'],
-//     },
-//     {
-//       provide: ListUsersUseCase.UseCase,
-//       useFactory: (userRepository: UserRepository.Repository) => {
-//         return new ListUsersUseCase.UseCase(userRepository);
-//       },
-//       inject: ['UserRepository'],
-//     },
-//     {
-//       provide: UpdateUserUseCase.UseCase,
-//       useFactory: (userRepository: UserRepository.Repository) => {
-//         return new UpdateUserUseCase.UseCase(userRepository);
-//       },
-//       inject: ['UserRepository'],
-//     },
-//     {
-//       provide: UpdatePasswordUseCase.UseCase,
-//       useFactory: (
-//         userRepository: UserRepository.Repository,
-//         hashProvider: HashProvider
-//       ) => {
-//         return new UpdatePasswordUseCase.UseCase(userRepository, hashProvider);
-//       },
-//       inject: ['UserRepository', 'HashProvider'],
-//     },
-//     {
-//       provide: DeleteUserUseCase.UseCase,
-//       useFactory: (userRepository: UserRepository.Repository) => {
-//         return new DeleteUserUseCase.UseCase(userRepository);
-//       },
-//       inject: ['UserRepository'],
-//     },
-//   ],
-// })
-// export class UsersModule {}
+import { AuthModule } from '../../auth/infraestructure/auth.module';
+import { PrismaService } from '../../shared/infraestructure/database/prisma/prisma.service';
+
+import { DeleteProcessedVideoUseCase } from '../application/usecases/delete-processed-video.usecase';
+import { RetrieveProcessedVideoUseCase } from '../application/usecases/retrieve-processed-video.usecase';
+import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
+import { UploadVideoUseCase } from '../application/usecases/upload-video.usecase';
+import { ProcessVideoUseCase } from '../application/usecases/process-video.usecase';
+import { GetVideoUseCase } from '../application/usecases/get-video.usecase';
+import { ListVideosUseCase } from '../application/usecases/list-videos.usecase';
+import { GoogleCloudStorageService } from '../../shared/infraestructure/storage/implementations/google-cloud-storage';
+import { AuthService } from 'src/auth/infraestructure/auth.service';
+import { UpdateVideoUseCase } from '../application/usecases/update-video';
+
+@Module({
+  imports: [AuthModule],
+  controllers: [VideosController],
+  providers: [
+    { provide: 'PrismaService', useClass: PrismaService },
+    {
+      provide: 'VideoRepository',
+      useFactory: (prismaService: PrismaService) =>
+        new VideoPrismaRepository(prismaService),
+      inject: ['PrismaService'],
+    },
+    { provide: 'StorageService', useClass: GoogleCloudStorageService },
+    {
+      provide: DeleteProcessedVideoUseCase.UseCase,
+      useFactory: (
+        videoRepository: VideoRepository.Repository,
+        storageService: GoogleCloudStorageService
+      ) => {
+        return new DeleteProcessedVideoUseCase.UseCase(storageService, videoRepository);
+      },
+      inject: ['VideoRepository', 'StorageService'],
+    },
+    {
+      provide: RetrieveProcessedVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository,
+        storageService: GoogleCloudStorageService) => {
+        return new RetrieveProcessedVideoUseCase.UseCase(storageService, videoRepository);
+      },
+      inject: ['VideoRepository'],
+    },
+    {
+      provide: UploadProcessedVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository, storageService: GoogleCloudStorageService) => {
+        return new UploadProcessedVideoUseCase.UseCase(storageService, videoRepository);
+      },
+      inject: ['VideoRepository', 'StorageService'],
+    },
+    {
+      provide: UploadVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository,
+        authService: AuthService
+      ) => {
+        return new UploadVideoUseCase.UseCase(videoRepository, authService);
+      },
+      inject: ['VideoRepository'],
+    },
+    {
+      provide: ProcessVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository) => {
+        return new ProcessVideoUseCase.UseCase(videoRepository);
+      },
+      inject: ['VideoRepository'],
+    },
+    {
+      provide: GetVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository) => {
+        return new GetVideoUseCase.UseCase(videoRepository);
+      },
+      inject: ['VideoRepository'],
+    },
+    {
+      provide: UpdateVideoUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository) => {
+        return new UpdateVideoUseCase.UseCase(videoRepository);
+      },
+      inject: ['VideoRepository'],
+    },
+    {
+      provide: ListVideosUseCase.UseCase,
+      useFactory: (videoRepository: VideoRepository.Repository) => {
+        return new ListVideosUseCase.UseCase(videoRepository);
+      },
+      inject: ['VideoRepository'],
+    },
+  ],
+})
+export class VideoModule { }

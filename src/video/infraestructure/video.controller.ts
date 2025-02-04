@@ -9,7 +9,6 @@ import {
     Inject,
     HttpCode,
     Query,
-    Put,
     UseGuards,
   } from '@nestjs/common';
   import { DeleteProcessedVideoUseCase } from '../application/usecases/delete-processed-video.usecase';
@@ -22,7 +21,7 @@ import {
   import { ListVideosUseCase } from '../application/usecases/list-videos.usecase';
 
   import { ListVideosDto } from './dtos/list-videos.dto';
-  import { RetrieveProcessedVideoDto } from './dtos/retrieve-processed-video.dto';
+//   import { RetrieveProcessedVideoDto } from './dtos/retrieve-processed-video.dto';
   import { UpdateVideoDto } from './dtos/update-video.dto';
   import { UploadProcessedVideoDto } from './dtos/upload-processed-video.dto';
   import { UploadVideoDto } from './dtos/upload-video.dto';
@@ -56,111 +55,48 @@ import {
     @Inject(UploadVideoUseCase.UseCase)
     private uploadVideoUseCase: UploadVideoUseCase.UseCase;
   
-    @Inject(UpdateUserUseCase.UseCase)
-    private updateUserUseCase: UpdateUserUseCase.UseCase;
+    @Inject(ProcessVideoUseCase.UseCase)
+    private processVideoUseCase: ProcessVideoUseCase.UseCase;
   
-    @Inject(UpdatePasswordUseCase.UseCase)
-    private updatePasswordUseCase: UpdatePasswordUseCase.UseCase;
+    @Inject(GetVideoUseCase.UseCase)
+    private getVideoUseCase: GetVideoUseCase.UseCase;
   
-    @Inject(DeleteUserUseCase.UseCase)
-    private deleteUserUseCase: DeleteUserUseCase.UseCase;
+    @Inject(UpdateVideoUseCase.UseCase)
+    private updateVideoUseCase: UpdateVideoUseCase.UseCase;
+  
+    @Inject(ListVideosUseCase.UseCase)
+    private listVideosUseCase: ListVideosUseCase.UseCase;
+
   
     @Inject(AuthService)
     private authService: AuthService;
   
-    static userToResponse(output: UserOutput) {
-      return new UserPresenter(output);
+    static videoToResponse(output: VideoOutput) {
+      return new VideoPresenter(output);
     }
   
-    static listUsersToResponse(output: ListUsersUseCase.Output) {
-      return new UserCollectionPresenter(output);
-    }
-  
-    @ApiResponse({
-      status: 409,
-      description: 'Conflito de e-mail',
-    })
-    @ApiResponse({
-      status: 422,
-      description: 'Corpo da requisição com dados inválidos',
-    })
-    @HttpCode(201)
-    @Post()
-    async create(@Body() signupDto: SignupDto) {
-      const output = await this.signupUseCase.execute(signupDto);
-      return UsersController.userToResponse(output);
-    }
-  
-    @ApiResponse({
-      status: 200,
-      schema: {
-        type: 'object',
-        properties: {
-          accessToken: {
-            type: 'string',
-          },
-        },
-      },
-    })
-    @ApiResponse({
-      status: 422,
-      description: 'Corpo da requisição com dados inválidos',
-    })
-    @ApiResponse({
-      status: 404,
-      description: 'E-mail não encontrado',
-    })
-    @ApiResponse({
-      status: 400,
-      description: 'Credenciais inválidas',
-    })
-    @HttpCode(200)
-    @Post('login')
-    async login(@Body() signinDto: SigninDto) {
-      const output = await this.signinUseCase.execute(signinDto);
-      const accessToken: { accessToken: string } =
-        await this.authService.generateJwt(output.id);
-      return accessToken;
+    static listVideosToResponse(output: ListVideosUseCase.Output) {
+      return new VideoCollectionPresenter(output);
     }
   
     @ApiBearerAuth()
+    @HttpCode(201)
     @ApiResponse({
-      status: 200,
-      description: 'User found',
-      schema: {
-        type: 'object',
-        properties: {
-          meta: {
-            type: 'object',
-            properties: {
-              total: { type: 'number' },
-              currentPage: { type: 'number' },
-              lastPage: { type: 'number' },
-              perPage: { type: 'number' },
-            },
-          },
-          data: {
-            type: 'array',
-            items: { $ref: getSchemaPath(UserPresenter) },
-          },
-        },
-      },
-    })
-    @ApiResponse({
-      status: 422,
-      description: 'Parâmetros de consulta inválidos',
-    })
-    @ApiResponse({
-      status: 401,
-      description: 'Acesso não autorizado',
-    })
+        status: 401,
+        description: 'Acesso não autorizado',
+      })
     @UseGuards(AuthGuard)
-    @Get()
-    async search(@Query() searchParams: ListUsersDto) {
-      const output = await this.listUsersUseCase.execute(searchParams);
-      return UsersController.listUsersToResponse(output);
+    @Post('upload')
+    async upload(@Body() uploadVideoDto: UploadVideoDto) {
+        return this.uploadVideoUseCase.execute(uploadVideoDto);
     }
-  
+
+    @HttpCode(201)
+    @Post('upload-processed')
+    async uploadProcessed(@Body() uploadProcessedVideoDto: UploadProcessedVideoDto) {
+        return this.uploadProcessedVideoUseCase.execute(uploadProcessedVideoDto);
+    }
+
     @ApiBearerAuth()
     @ApiResponse({
       status: 404,
@@ -170,19 +106,14 @@ import {
       status: 401,
       description: 'Acesso não autorizado',
     })
-    @UseGuards(AuthGuard)
     @UseGuards(AuthGuard)
     @Get(':id')
-    async findOne(@Param('id') id: string) {
-      const output = await this.getUserUseCase.execute({ id });
-      return UsersController.userToResponse(output);
+    async getVideo(@Param('id') id: string) {
+        const output = await this.getVideoUseCase.execute({ id });
+        return VideosController.videoToResponse(output);
     }
-  
+
     @ApiBearerAuth()
-    @ApiResponse({
-      status: 422,
-      description: 'Corpo da requisição com dados inválidos',
-    })
     @ApiResponse({
       status: 404,
       description: 'Id não encontrado',
@@ -192,20 +123,12 @@ import {
       description: 'Acesso não autorizado',
     })
     @UseGuards(AuthGuard)
-    @Put(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-      const output = await this.updateUserUseCase.execute({
-        id,
-        ...updateUserDto,
-      });
-      return UsersController.userToResponse(output);
+    @Get('processed/:id')
+    async getProcessedVideo(@Param('id') id: string) {
+        await this.retrieveProcessedVideoUseCase.execute({ id });
     }
-  
+
     @ApiBearerAuth()
-    @ApiResponse({
-      status: 422,
-      description: 'Corpo da requisição com dados inválidos',
-    })
     @ApiResponse({
       status: 404,
       description: 'Id não encontrado',
@@ -215,39 +138,25 @@ import {
       description: 'Acesso não autorizado',
     })
     @UseGuards(AuthGuard)
-    @Patch(':id')
-    async updatePassword(
-      @Param('id') id: string,
-      @Body() updatePasswordDto: UpdatePasswordDto
-    ) {
-      const output = await this.updatePasswordUseCase.execute({
-        id,
-        ...updatePasswordDto,
-      });
-      return UsersController.userToResponse(output);
-    }
-  
-    @ApiBearerAuth()
-    @ApiResponse({
-      status: 204,
-      description: 'Resposta de confirmação da exclusão',
-    })
-    @ApiResponse({
-      status: 404,
-      description: 'Id não encontrado',
-    })
-    @ApiResponse({
-      status: 401,
-      description: 'Acesso não autorizado',
-    })
-    @UseGuards(AuthGuard)
-    @HttpCode(204)
     @Delete(':id')
-    async remove(@Param('id') id: string) {
-      await this.deleteUserUseCase.execute({ id });
+    async deleteProcessed(@Param('id') id: string) {
+        await this.deleteProcessedVideoUseCase.execute({ id });
+    }
+
+    @ApiBearerAuth()
+    @Get()
+    async list(@Query() listVideosDto: ListVideosDto) {
+        const output = await this.listVideosUseCase.execute(listVideosDto);
+        return VideosController.listVideosToResponse(output);
+    }
+
+    @ApiBearerAuth()
+    @Patch(':id/status')
+    async updateStatus(@Param('id') id: string, @Body() updateVideoDto: UpdateVideoDto) {
+        return this.updateVideoUseCase.execute({ id, ...updateVideoDto });
     }
   }
-  
+
 
 //   @Post('video')
 //   @UseGuards(AuthGuard('jwt'))
