@@ -159,6 +159,12 @@ export class VideosController {
   ) {
     return this.updateVideoUseCase.execute({ id, ...updateVideoDto });
   }
+
+  @ApiBearerAuth()
+  @Post('process/:id')
+  async process(@Param('id') id: string) {
+    return this.processVideoUseCase.execute({ id });
+  }
 }
 
 //   @Post('video')
