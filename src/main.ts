@@ -6,12 +6,21 @@ import {
 } from '@nestjs/platform-fastify';
 import { applyGlobalConfig } from './global-config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import multipart from '@fastify/multipart';
+import fastifyMultipart from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter()
   );
+
+  await app.register(multipart, {
+    attachFieldsToBody: true,
+    limits:{
+      fileSize: 100 * 1024 * 1024, // 100 MB
+    }
+  });
 
   const config = new DocumentBuilder()
     .setTitle('FIAP - Fase 5: Hackaton')

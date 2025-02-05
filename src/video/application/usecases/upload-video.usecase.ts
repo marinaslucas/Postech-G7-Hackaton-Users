@@ -7,7 +7,7 @@ import { AuthService } from 'src/auth/infraestructure/auth.service';
 
 export namespace UploadVideoUseCase {
   export type Input = {
-    file: Express.Multer.File;
+    file: any
     jwtToken: string;
   };
 
@@ -17,28 +17,29 @@ export namespace UploadVideoUseCase {
     constructor(
       private videoRepository: VideoRepository.Repository,
       private authService: AuthService
-    ) {}
+    ) { }
 
     async execute(input: Input): Promise<Output> {
+      console.log('UploadVideoUseCase.execute START...');
       const { file, jwtToken } = input;
 
-      if (!file || !file.buffer) {
+      if (!file) {
         throw new BadRequestError('File is missing or invalid');
       }
-      //VALIDAR COMO PEGAR O TOKEN DOS HEADERS
-      const decodedToken = await this.authService.verifyJwt<{
-        email: string;
-        id: string;
-      }>(jwtToken);
+
+      const decodedToken = await this.authService.decode(jwtToken);
+
+      console.log('decodedToken', decodedToken);
 
       const videoEntity = new VideoEntity({
-        title: file.originalname,
-        userEmail: decodedToken.email,
-        base64: file.buffer.toString('base64'),
-        userId: decodedToken.id,
+        title: file.filename,
+        userEmail: 'marina3@me.com',
+        base64: `data:video/mp4;base64,${file.file.toString('base64')}`,
+        userId: '39f50baf-7c80-44fd-88ee-a7ab50dcf4a1',
         status: 'processing',
         createdAt: new Date(),
       });
+
 
       await this.videoRepository.insert(videoEntity);
 

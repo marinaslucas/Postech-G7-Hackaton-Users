@@ -52,6 +52,7 @@ export class VideoPrismaRepository implements VideoRepository.Repository {
   }
 
   async insert(entity: VideoEntity): Promise<void> {
+    console.log('VideoPrismaRepository.insert', entity);
     await this.prismaService.video.create({
       data: entity.toJson(),
     });

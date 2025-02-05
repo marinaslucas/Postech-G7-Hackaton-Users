@@ -10,7 +10,12 @@ import {
   HttpCode,
   Query,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
+  Headers,
+  Req
 } from '@nestjs/common';
+import { FastifyRequest } from 'fastify';
 import { DeleteProcessedVideoUseCase } from '../application/usecases/delete-processed-video.usecase';
 import { RetrieveProcessedVideoUseCase } from '../application/usecases/retrieve-processed-video.usecase';
 import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
@@ -35,10 +40,12 @@ import { AuthService } from '../../auth/infraestructure/auth.service';
 import { AuthGuard } from '../../auth/infraestructure/auth.guard';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Videos')
 @Controller('videos')
@@ -80,15 +87,35 @@ export class VideosController {
 
   @ApiBearerAuth()
   @HttpCode(201)
-  @ApiResponse({
-    status: 401,
-    description: 'Acesso não autorizado',
-  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UploadVideoDto })
+  @ApiResponse({ status: 401, description: 'Acesso não autorizado' })
   @UseGuards(AuthGuard)
   @Post('upload')
-  async upload(@Body() uploadVideoDto: UploadVideoDto) {
-    return this.uploadVideoUseCase.execute(uploadVideoDto);
+  async upload(@Req() request: FastifyRequest, @Headers('authorization') authHeader: string) {
+    console.log('Upload.start');
+    console.log('authHeader', authHeader)
+    const data = (request.body as UploadVideoDto).file; 
+    if (!data) {
+      throw new Error('Nenhum arquivo enviado!');
+    }
+
+    const fileBuffer = await data.toBuffer();
+    console.log('fileBuffer', fileBuffer);
+
+    const jwtToken = authHeader.split(' ')[1];
+    
+    return this.uploadVideoUseCase.execute({
+      file: { filename: data.filename, file: fileBuffer },
+      jwtToken,
+    });
   }
+
+  //   
+  //   async uploadVideo(@UploadedFile() file: Express.Multer.File, @Headers('authorization') authHeader: string) {
+  //     const jwtToken = authHeader.split(' ')[1]; // Extract the token from the Bearer scheme
+  //     //console.log('Received JWT Token:', jwtToken); // Log the token for debugging
+  // return this.videoService.uploadVideo(file, jwtToken)
 
   @HttpCode(201)
   @Post('upload-processed')

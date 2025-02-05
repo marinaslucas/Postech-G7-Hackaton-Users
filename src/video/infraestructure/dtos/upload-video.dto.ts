@@ -8,7 +8,7 @@ export class UploadVideoDto implements UploadVideoUseCase.Input {
   })
   @IsString()
   @IsNotEmpty()
-  file: Express.Multer.File;
+  file: any;
 
   @ApiProperty({
     description: 'Token JWT do usuário',

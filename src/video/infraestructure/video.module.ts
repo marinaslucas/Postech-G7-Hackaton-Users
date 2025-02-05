@@ -14,7 +14,7 @@ import { ProcessVideoUseCase } from '../application/usecases/process-video.useca
 import { GetVideoUseCase } from '../application/usecases/get-video.usecase';
 import { ListVideosUseCase } from '../application/usecases/list-videos.usecase';
 import { GoogleCloudStorageService } from '../../shared/infraestructure/storage/implementations/google-cloud-storage';
-import { AuthService } from 'src/auth/infraestructure/auth.service';
+import { AuthService } from '../../auth/infraestructure/auth.service';
 import { UpdateVideoUseCase } from '../application/usecases/update-video';
 
 @Module({
@@ -72,11 +72,11 @@ import { UpdateVideoUseCase } from '../application/usecases/update-video';
       provide: UploadVideoUseCase.UseCase,
       useFactory: (
         videoRepository: VideoRepository.Repository,
-        authService: AuthService
+        authService: AuthService  // Injetando AuthService corretamente
       ) => {
         return new UploadVideoUseCase.UseCase(videoRepository, authService);
       },
-      inject: ['VideoRepository'],
+      inject: ['VideoRepository', AuthService],  // Corrigido para AuthService diretamente
     },
     {
       provide: ProcessVideoUseCase.UseCase,
