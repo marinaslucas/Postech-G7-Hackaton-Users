@@ -91,7 +91,7 @@ export namespace ProcessVideoUseCase {
         const zipPath = await this.createZipFile(screenshots, tempDir);
 
         // Update video status to processed
-        video.updateStatus('processed');
+        video.updateStatus('completed');
         await this.videoRepository.update(video);
 
         // Cleanup temporary files
@@ -101,7 +101,7 @@ export namespace ProcessVideoUseCase {
         this.cleanup(tempDir);
         
         // Update video status to error
-        video.updateStatus('error');
+        video.updateStatus('failed');
         await this.videoRepository.update(video);
         
         throw error;
