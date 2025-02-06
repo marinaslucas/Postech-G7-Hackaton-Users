@@ -4,7 +4,7 @@ import { Video } from '@prisma/client';
 
 export class VideoModelMapper {
   static toEntity(model: Video) {
-    const { title, base64, userId, userEmail, status, createdAt } = model;
+    const { title, base64, userId, userEmail, status, createdAt, processedVideoUrl } = model;
     const entity = {
       title,
       base64,
@@ -12,6 +12,7 @@ export class VideoModelMapper {
       userEmail,
       status,
       createdAt,
+      processedVideoUrl,
     };
     try {
       return new VideoEntity(entity, model.id);

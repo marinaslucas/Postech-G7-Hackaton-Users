@@ -52,7 +52,6 @@ export class VideoPrismaRepository implements VideoRepository.Repository {
   }
 
   async insert(entity: VideoEntity): Promise<void> {
-    console.log('VideoPrismaRepository.insert', entity);
     await this.prismaService.video.create({
       data: entity.toJson(),
     });
@@ -66,10 +65,10 @@ export class VideoPrismaRepository implements VideoRepository.Repository {
         id: entity._id,
       },
     });
+    const videoUpdated = await this._get(entity._id);
   }
 
   async findById(id: string): Promise<VideoEntity> {
-    console.log('VideoPrismaRepository.findById', id)
     return await this._get(id);
   }
 
@@ -86,14 +85,12 @@ export class VideoPrismaRepository implements VideoRepository.Repository {
   }
 
   protected async _get(id: string): Promise<VideoEntity> {
-    console.log('VideoPrismaRepository._get', id)
     try {
       const video = await this.prismaService.video.findUnique({
         where: {
           id,
         },
       });
-      console.log('VideoPrismaRepository.findUnique video', video)
       return VideoModelMapper.toEntity(video);
     } catch (error) {
       throw new NotFoundError(`Video not found using ID ${id}`);

@@ -31,8 +31,8 @@ export class VideoEntity extends Entity<VideoProps> {
     this.props.status = value;
   }
 
-  updateVideoUrl(url: string) {
-    this.props.processedVideoUrl = url;
+  updateVideoUrl(value: string) {
+    this.props.processedVideoUrl = value;
   }
 
   get base64(): string {
@@ -60,6 +60,6 @@ export class VideoEntity extends Entity<VideoProps> {
   }
 
   get processedVideoUrl(): string | null {
-    return this.props.processedVideoUrl ?? null;
+    return this.props.processedVideoUrl || null;
   }
 }

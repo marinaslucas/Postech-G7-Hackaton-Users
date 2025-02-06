@@ -18,7 +18,6 @@ export namespace ListUsersUseCase {
     async execute(input: Input): Promise<Output> {
       const params = new UserRepository.SearchParams(input);
       const searchResult = await this.userRepository.search(params);
-      console.log('searchResult', JSON.stringify(searchResult));
       return this.toOutput(searchResult);
     }
 

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { VideoRepository } from '../../domain/repositories/video.repository';
 import { UseCase as DefaultUseCase } from '../../../shared/application/providers/usecases/use-case';
 import ffmpeg from 'fluent-ffmpeg';
@@ -21,11 +20,8 @@ export namespace ProcessVideoUseCase {
     constructor(private videoRepository: VideoRepository.Repository, private storageService: GoogleCloudStorageService) {}
 
     private createTempDir(id: string): string {
-      console.log('ProcessVideoUseCase.createTempDir', id);
-      const tempDir = path.join(process.cwd(), 'temp', id);
-      
-      console.log(`Attempting to create directory: ${tempDir} (length: ${tempDir.length})`);
-      
+      const tempDir = path.join(process.cwd(), 'processed-videos', id);
+            
       try {
         if (fs.existsSync(tempDir)) {
           console.log(`Directory already exists: ${tempDir}`);
@@ -35,30 +31,29 @@ export namespace ProcessVideoUseCase {
         }
       } catch (error) {
         console.error(`Failed to create directory: ${tempDir}`, error);
-        throw error; // Rethrow the error after logging it
+        throw error; 
       }
       
       return tempDir;
     }
 
     private async processVideo(videoPath: string, outputDir: string): Promise<string[]> {
-      console.log('ProcessVideoUseCase.processVideo', videoPath, outputDir);
-      
+    
       return new Promise((resolve, reject) => {
-        const screenshots: string[] = [];
-        
         console.log(`Processing video at path: ${videoPath}`);
         console.log(`Output directory for screenshots: ${outputDir}`);
-        
+    
         ffmpeg(videoPath)
-          .on('end', () => resolve(screenshots))
-          .on('error', (err) => {
+          .on('filenames', (filenames) => {
+            console.log('Screenshots filenames:', filenames);
+            resolve(filenames.map((filename) => path.join(outputDir, filename)));
+          })
+          .on('end', function() {
+            console.log('FFmpeg processing finished');
+          })
+          .on('error', function(err) {
             console.error('FFmpeg error:', err);
             reject(err);
-          })
-          .on('progress', (progress) => {
-            const screenshotPath = path.join(outputDir, `screenshot-${progress.frames}.png`);
-            screenshots.push(screenshotPath);
           })
           .screenshots({
             count: 30,
@@ -67,16 +62,24 @@ export namespace ProcessVideoUseCase {
           });
       });
     }
-
+    
+    
     private async createZipFile(screenshots: string[], outputDir: string): Promise<string> {
       const zipPath = path.join(outputDir, 'screenshots.zip');
+      
+      if (fs.existsSync(zipPath)) {
+        fs.unlinkSync(zipPath); 
+        
+        console.log(`Deleted existing zip file: ${zipPath}`);
+      }
+    
       const output = fs.createWriteStream(zipPath);
       const archive = archiver('zip', { zlib: { level: 9 } });
-
+    
       return new Promise((resolve, reject) => {
         output.on('close', () => resolve(zipPath));
         archive.on('error', (err) => reject(err));
-
+    
         archive.pipe(output);
         screenshots.forEach((screenshot) => {
           archive.file(screenshot, { name: path.basename(screenshot) });
@@ -85,59 +88,80 @@ export namespace ProcessVideoUseCase {
       });
     }
 
-    private cleanup(tempDir: string): void {
-      if (fs.existsSync(tempDir)) {
-        fs.rmSync(tempDir, { recursive: true, force: true });
-      }
-    }
+    // private cleanup(tempDir: string): void {
+    //   if (fs.existsSync(tempDir)) {
+    //     try {
+    //       const files = fs.readdirSync(tempDir);
+    //       if (files.length > 0) {
+    //         console.log(`Cleaning up directory: ${tempDir}. Contents: ${files.join(', ')}`);
+    //         files.forEach(file => {
+    //           const filePath = path.join(tempDir, file);
+    //           let attempts = 0;
+    //           const maxAttempts = 10; // Increase max attempts
+    //           const delayBetweenAttempts = 200; // Increase delay between attempts
+    
+    //           const removeFile = () => {
+    //             try {
+    //               fs.unlinkSync(filePath);
+    //               console.log(`Removed file: ${filePath}`);
+    //             } catch (error) {
+    //               if (error.code === 'EBUSY' && attempts < maxAttempts) {
+    //                 attempts++;
+    //                 console.log(`File is busy, retrying... Attempt ${attempts}`);
+    //                 setTimeout(removeFile, delayBetweenAttempts); // Retry after increased delay
+    //               } else {
+    //                 console.error(`Failed to remove file: ${filePath}`, error);
+    //               }
+    //             }
+    //           };
+    
+    //           removeFile();
+    //         });
+    //       }
+    
+    //       // Now remove the directory itself
+    //       fs.rmSync(tempDir, { recursive: true, force: true });
+    //       console.log(`Removed directory: ${tempDir}`);
+    //     } catch (error) {
+    //       console.error(`Failed to clean up directory: ${tempDir}`, error);
+    //     }
+    //   }
+    // }
+
+    // private cleanup(tempDir: string): void {
+    //   if (fs.existsSync(tempDir)) {
+    //     fs.rmSync(tempDir, { recursive: true, force: true });
+    //   }
+    // }
 
     async execute(input: Input): Promise<Output> {
       const { id } = input;
 
-      console.log('ProcessVideoUseCase.execute', input)
 
       const video = await this.videoRepository.findById(id);
       if (!video) {
         throw new NotFoundError('Video not found');
       }
 
-      console.log('ProcessVideoUseCase.usecase video', video)
-
       const tempDir = this.createTempDir(id);
-      console.log('ProcessVideoUseCase.usecase tempDir', tempDir)
 
       const videoPath = path.join(tempDir, 'video.mp4');
-      console.log('ProcessVideoUseCase.usecase videoPath', videoPath)
 
       try {
-        console.log('ProcessVideoUseCase.usecase start processing...')
         const videoBuffer = Buffer.from(video.base64, 'base64');
-        console.log('ProcessVideoUseCase.usecase videoBuffer', videoBuffer)
         fs.writeFileSync(videoPath, videoBuffer);
-       console.log('ProcessVideoUseCase.usecase writeFile')  
         const screenshots = await this.processVideo(videoPath, tempDir);
 
-        console.log('ProcessVideoUseCase.usecase screenshots', screenshots)
         const zipPath = await this.createZipFile(screenshots, tempDir);
 
-        console.log('ProcessVideoUseCase.usecase zipPath', zipPath)
-        const zipUrl = await this.storageService.upload(zipPath, 'processed');
-
-        console.log('ProcessVideoUseCase.usecase zipUrl', zipUrl)
-
+        const zipUrl = await this.storageService.upload(zipPath, 'processed-');
         video.updateStatus('completed');
         video.updateVideoUrl(zipUrl);
-        console.log('ProcessVideoUseCase.usecase video updated with zip url', video)
-
         await this.videoRepository.update(video);
-
-        this.cleanup(tempDir);
-
-        console.log('ProcessVideoUseCase.usecase completed')
+        // this.cleanup(tempDir);
         return VideoOutputMapper.toOutput(video);
       } catch (error) {
-        //this.cleanup(tempDir);
-        
+        // this.cleanup(tempDir);
         video.updateStatus('failed');
         await this.videoRepository.update(video);
 

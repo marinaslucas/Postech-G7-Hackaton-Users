@@ -14,6 +14,7 @@ export class GoogleCloudStorageService implements StorageInterface {
   }
 
   async upload(filePath: string, destination: string): Promise<string> {
+    try{
     if (!fs.existsSync(filePath)) {
       throw new BadRequestError('File not found for upload');
     }
@@ -21,7 +22,6 @@ export class GoogleCloudStorageService implements StorageInterface {
     const bucket = cloudStorage.bucket;
     const fileName = path.basename(filePath);
     const fileUpload = bucket.file(destination + fileName);
-
     await bucket.upload(filePath, {
       destination: fileUpload.name,
       resumable: false,
@@ -29,9 +29,12 @@ export class GoogleCloudStorageService implements StorageInterface {
         contentType: 'application/zip',
       },
     });
-
     return `https://storage.googleapis.com/${this.bucketName}/${fileUpload.name}`;
   }
+  catch(error){
+    throw error;
+  }
+}
 
   async download(fileId: string): Promise<Readable> {
     const bucketName = this.bucketName;

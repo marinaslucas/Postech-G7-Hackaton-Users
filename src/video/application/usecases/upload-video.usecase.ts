@@ -20,7 +20,6 @@ export namespace UploadVideoUseCase {
     ) { }
 
     async execute(input: Input): Promise<Output> {
-      console.log('UploadVideoUseCase.execute START...');
       const { file, jwtToken } = input;
 
       if (!file) {
@@ -29,12 +28,10 @@ export namespace UploadVideoUseCase {
 
       const decodedToken = await this.authService.decode<{ payload: { email: string; id: string } }>(jwtToken);
 
-      console.log('decodedToken', decodedToken);
-
       const videoEntity = new VideoEntity({
         title: file.filename,
         userEmail: decodedToken.payload.email,
-        base64: `data:video/mp4;base64,${file.file.toString('base64')}`,
+        base64: file.file.toString('base64'),
         userId: decodedToken.payload.id,
         status: 'processing',
         createdAt: new Date(),

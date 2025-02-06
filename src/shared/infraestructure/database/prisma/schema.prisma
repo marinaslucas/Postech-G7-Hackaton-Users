@@ -26,14 +26,15 @@ enum VideoStatus {
 }
 
 model Video {
-  id        String      @id @db.Uuid
-  title     String      @db.VarChar(255)
-  userEmail String      @db.VarChar(255)
-  base64    String      @db.Text
-  userId    String      @db.Uuid
-  user      User        @relation(fields: [userId], references: [id], name: "UserVideos")
-  status    VideoStatus @default(processing)
-  createdAt DateTime    @default(now())
+  id                String      @id @db.Uuid
+  title             String      @db.VarChar(255)
+  userEmail         String      @db.VarChar(255)
+  base64            String      @db.Text
+  userId            String      @db.Uuid
+  user              User        @relation(fields: [userId], references: [id], name: "UserVideos")
+  status            VideoStatus @default(processing)
+  createdAt         DateTime    @default(now())
+  processedVideoUrl String?     @db.Text
 
   @@index([userId])
   @@index([userEmail])

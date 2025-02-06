@@ -91,15 +91,12 @@ export class VideosController {
   @UseGuards(AuthGuard)
   @Post('upload')
   async upload(@Req() request: FastifyRequest, @Headers('authorization') authHeader: string) {
-    console.log('Upload.start');
-    console.log('authHeader', authHeader)
     const data = (request.body as UploadVideoDto).file; 
     if (!data) {
       throw new Error('Nenhum arquivo enviado!');
     }
 
     const fileBuffer = await data.toBuffer();
-    console.log('fileBuffer', fileBuffer);
 
     const jwtToken = authHeader.split(' ')[1];
     
