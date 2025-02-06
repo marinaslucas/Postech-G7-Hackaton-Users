@@ -13,9 +13,9 @@ export class AuthService {
     private envConfigService: EnvConfigService
   ) {}
 
-  async generateJwt(userId: string, userEmail: string): Promise<GenerateJwtProps> {
+  async generateJwt(userId: string): Promise<GenerateJwtProps> {
     const accessToken = await this.jwtService.signAsync({
-      payload: { id: userId, email: userEmail },
+      payload: { id: userId },
       options: {},
     });
     return { accessToken };
@@ -26,11 +26,5 @@ export class AuthService {
       secret: this.envConfigService.getJwtSecret(),
     });
     return payload as T;
-  }
-
-  async decode(token: string) {
-    return await this.jwtService.verifyAsync(token, {
-      secret: this.envConfigService.getJwtSecret(),
-    });
   }
 }
