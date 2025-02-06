@@ -116,7 +116,7 @@ export class UsersController {
   async login(@Body() signinDto: SigninDto) {
     const output = await this.signinUseCase.execute(signinDto);
     const accessToken: { accessToken: string } =
-      await this.authService.generateJwt(output.id, output.email);
+      await this.authService.generateJwt({ userId: output.id, userEmail: output.email });
     return accessToken;
   }
 

@@ -70,7 +70,6 @@ export namespace ProcessVideoUseCase {
     async execute(input: Input): Promise<Output> {
       const { id } = input;
 
-      // Get video from repository
       const video = await this.videoRepository.findById(id);
       if (!video) {
         throw new BadRequestError('Video not found');
@@ -80,27 +79,20 @@ export namespace ProcessVideoUseCase {
       const videoPath = path.join(tempDir, 'video.mp4');
 
       try {
-        // Write base64 to temp file
         const videoBuffer = Buffer.from(video.base64, 'base64');
         fs.writeFileSync(videoPath, videoBuffer);
 
-        // Process video and generate screenshots
         const screenshots = await this.processVideo(videoPath, tempDir);
 
-        // Create zip file with screenshots
         const zipPath = await this.createZipFile(screenshots, tempDir);
 
-        // Update video status to processed
         video.updateStatus('completed');
         await this.videoRepository.update(video);
 
-        // Cleanup temporary files
         this.cleanup(tempDir);
       } catch (error) {
-        // Cleanup on error
         this.cleanup(tempDir);
         
-        // Update video status to error
         video.updateStatus('failed');
         await this.videoRepository.update(video);
         

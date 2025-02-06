@@ -27,15 +27,15 @@ export namespace UploadVideoUseCase {
         throw new BadRequestError('File is missing or invalid');
       }
 
-      const decodedToken = await this.authService.decode(jwtToken);
+      const decodedToken = await this.authService.decode<{ payload: { email: string; id: string } }>(jwtToken);
 
       console.log('decodedToken', decodedToken);
 
       const videoEntity = new VideoEntity({
         title: file.filename,
-        userEmail: 'marina3@me.com',
+        userEmail: decodedToken.payload.email,
         base64: `data:video/mp4;base64,${file.file.toString('base64')}`,
-        userId: '39f50baf-7c80-44fd-88ee-a7ab50dcf4a1',
+        userId: decodedToken.payload.id,
         status: 'processing',
         createdAt: new Date(),
       });
