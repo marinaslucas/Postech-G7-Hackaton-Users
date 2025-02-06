@@ -10,8 +10,6 @@ import {
   HttpCode,
   Query,
   UseGuards,
-  UploadedFile,
-  UseInterceptors,
   Headers,
   Req
 } from '@nestjs/common';
@@ -45,7 +43,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+
 
 @ApiTags('Videos')
 @Controller('videos')
@@ -111,18 +109,18 @@ export class VideosController {
     });
   }
 
-  //   
-  //   async uploadVideo(@UploadedFile() file: Express.Multer.File, @Headers('authorization') authHeader: string) {
-  //     const jwtToken = authHeader.split(' ')[1]; // Extract the token from the Bearer scheme
-  //     //console.log('Received JWT Token:', jwtToken); // Log the token for debugging
-  // return this.videoService.uploadVideo(file, jwtToken)
-
   @HttpCode(201)
   @Post('upload-processed')
   async uploadProcessed(
     @Body() uploadProcessedVideoDto: UploadProcessedVideoDto
   ) {
     return this.uploadProcessedVideoUseCase.execute(uploadProcessedVideoDto);
+  }
+
+  @ApiBearerAuth()
+  @Post('process/:id')
+  async process(@Param('id') id: string) {
+    return this.processVideoUseCase.execute({ id });
   }
 
   @ApiBearerAuth()
@@ -187,12 +185,3 @@ export class VideosController {
     return this.updateVideoUseCase.execute({ id, ...updateVideoDto });
   }
 }
-
-//   @Post('video')
-//   @UseGuards(AuthGuard('jwt'))
-//   @UseInterceptors(FileInterceptor('file'))
-//   async uploadVideo(@UploadedFile() file: Express.Multer.File, @Headers('authorization') authHeader: string) {
-//     const jwtToken = authHeader.split(' ')[1]; // Extract the token from the Bearer scheme
-//     //console.log('Received JWT Token:', jwtToken); // Log the token for debugging
-// return this.videoService.uploadVideo(file, jwtToken);
-// }
