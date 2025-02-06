@@ -16,7 +16,7 @@ import {
 import { FastifyRequest } from 'fastify';
 import { DeleteProcessedVideoUseCase } from '../application/usecases/delete-processed-video.usecase';
 import { RetrieveProcessedVideoUseCase } from '../application/usecases/retrieve-processed-video.usecase';
-import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
+// import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
 import { UploadVideoUseCase } from '../application/usecases/upload-video.usecase';
 import { ProcessVideoUseCase } from '../application/usecases/process-video.usecase';
 import { GetVideoUseCase } from '../application/usecases/get-video.usecase';
@@ -26,7 +26,7 @@ import { ListVideosUseCase } from '../application/usecases/list-videos.usecase';
 import { ListVideosDto } from './dtos/list-videos.dto';
 //   import { RetrieveProcessedVideoDto } from './dtos/retrieve-processed-video.dto';
 import { UpdateVideoDto } from './dtos/update-video.dto';
-import { UploadProcessedVideoDto } from './dtos/upload-processed-video.dto';
+// import { UploadProcessedVideoDto } from './dtos/upload-processed-video.dto';
 import { UploadVideoDto } from './dtos/upload-video.dto';
 
 import {
@@ -34,7 +34,7 @@ import {
   VideoPresenter,
 } from './presenters/video.presenter';
 import { VideoOutput } from '../application/dtos/video-output';
-import { AuthService } from '../../auth/infraestructure/auth.service';
+// import { AuthService } from '../../auth/infraestructure/auth.service';
 import { AuthGuard } from '../../auth/infraestructure/auth.guard';
 import {
   ApiBearerAuth,
@@ -42,7 +42,6 @@ import {
   ApiConsumes,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
 
 
@@ -55,8 +54,8 @@ export class VideosController {
   @Inject(RetrieveProcessedVideoUseCase.UseCase)
   private retrieveProcessedVideoUseCase: RetrieveProcessedVideoUseCase.UseCase;
 
-  @Inject(UploadProcessedVideoUseCase.UseCase)
-  private uploadProcessedVideoUseCase: UploadProcessedVideoUseCase.UseCase;
+  // @Inject(UploadProcessedVideoUseCase.UseCase)
+  // private uploadProcessedVideoUseCase: UploadProcessedVideoUseCase.UseCase;
 
   @Inject(UploadVideoUseCase.UseCase)
   private uploadVideoUseCase: UploadVideoUseCase.UseCase;
@@ -73,8 +72,8 @@ export class VideosController {
   @Inject(ListVideosUseCase.UseCase)
   private listVideosUseCase: ListVideosUseCase.UseCase;
 
-  @Inject(AuthService)
-  private authService: AuthService;
+  // @Inject(AuthService)
+  // private authService: AuthService;
 
   static videoToResponse(output: VideoOutput) {
     return new VideoPresenter(output);
@@ -110,14 +109,16 @@ export class VideosController {
     });
   }
 
-  @HttpCode(201)
-  @Post('upload-processed')
-  async uploadProcessed(
-    @Body() uploadProcessedVideoDto: UploadProcessedVideoDto
-  ) {
-    return this.uploadProcessedVideoUseCase.execute(uploadProcessedVideoDto);
-  }
+  // @HttpCode(201)
+  // @Post('upload-processed')
+  // async uploadProcessed(
+  //   @Body() uploadProcessedVideoDto: UploadProcessedVideoDto
+  // ) {
+  //   return this.uploadProcessedVideoUseCase.execute(uploadProcessedVideoDto);
+  // }
 
+  @ApiResponse({ status: 500, description: 'Erro ao processar video' })
+  @HttpCode(200)
   @ApiBearerAuth()
   @Post('process/:id')
   async process(@Param('id') id: string) {

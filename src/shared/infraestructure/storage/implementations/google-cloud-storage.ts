@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { cloudStorage } from '../config/cloud-storage.config';
 import { NotFoundError } from 'src/shared/domain/errors/not-found-error';
 import { BadRequestError } from 'src/shared/application/errors/bad-request-error';
+import * as path from 'path';
 
 export class GoogleCloudStorageService implements StorageInterface {
   private bucketName: string;
@@ -12,23 +13,24 @@ export class GoogleCloudStorageService implements StorageInterface {
     this.bucketName = process.env.GCLOUD_STORAGE_BUCKET;
   }
 
-  async upload(
-    file: Express.Multer.File,
-    destination: string
-  ): Promise<string> {
-    if (!file || !file.buffer) {
-      throw new BadRequestError('Video file not provided');
+  async upload(filePath: string, destination: string): Promise<string> {
+    if (!fs.existsSync(filePath)) {
+      throw new BadRequestError('File not found for upload');
     }
 
     const bucket = cloudStorage.bucket;
-    const fileUpload = bucket.file(destination + file.originalname);
+    const fileName = path.basename(filePath);
+    const fileUpload = bucket.file(destination + fileName);
 
-    await fileUpload.save(file.buffer, {
-      metadata: { contentType: file.mimetype },
+    await bucket.upload(filePath, {
+      destination: fileUpload.name,
       resumable: false,
+      metadata: {
+        contentType: 'application/zip',
+      },
     });
 
-    return fileUpload.publicUrl();
+    return `https://storage.googleapis.com/${this.bucketName}/${fileUpload.name}`;
   }
 
   async download(fileId: string): Promise<Readable> {
@@ -63,7 +65,7 @@ export class GoogleCloudStorageService implements StorageInterface {
   }
 
   async listFiles(prefix?: string): Promise<string[]> {
-    const bucket = cloudStorage.bucket;
+    const bucket = cloudStorage.bucket
     const [files] = await bucket.getFiles({ prefix });
     return files.map(file => file.name);
   }

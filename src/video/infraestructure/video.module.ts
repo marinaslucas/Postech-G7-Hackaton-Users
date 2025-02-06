@@ -8,7 +8,7 @@ import { PrismaService } from '../../shared/infraestructure/database/prisma/pris
 
 import { DeleteProcessedVideoUseCase } from '../application/usecases/delete-processed-video.usecase';
 import { RetrieveProcessedVideoUseCase } from '../application/usecases/retrieve-processed-video.usecase';
-import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
+// import { UploadProcessedVideoUseCase } from '../application/usecases/upload-processed-video.usecase';
 import { UploadVideoUseCase } from '../application/usecases/upload-video.usecase';
 import { ProcessVideoUseCase } from '../application/usecases/process-video.usecase';
 import { GetVideoUseCase } from '../application/usecases/get-video.usecase';
@@ -55,19 +55,19 @@ import { UpdateVideoUseCase } from '../application/usecases/update-video';
       },
       inject: ['VideoRepository'],
     },
-    {
-      provide: UploadProcessedVideoUseCase.UseCase,
-      useFactory: (
-        videoRepository: VideoRepository.Repository,
-        storageService: GoogleCloudStorageService
-      ) => {
-        return new UploadProcessedVideoUseCase.UseCase(
-          storageService,
-          videoRepository
-        );
-      },
-      inject: ['VideoRepository', 'StorageService'],
-    },
+    // {
+    //   provide: UploadProcessedVideoUseCase.UseCase,
+    //   useFactory: (
+    //     videoRepository: VideoRepository.Repository,
+    //     storageService: GoogleCloudStorageService
+    //   ) => {
+    //     return new UploadProcessedVideoUseCase.UseCase(
+    //       storageService,
+    //       videoRepository
+    //     );
+    //   },
+    //   inject: ['VideoRepository', 'StorageService'],
+    // },
     {
       provide: UploadVideoUseCase.UseCase,
       useFactory: (
@@ -80,10 +80,10 @@ import { UpdateVideoUseCase } from '../application/usecases/update-video';
     },
     {
       provide: ProcessVideoUseCase.UseCase,
-      useFactory: (videoRepository: VideoRepository.Repository) => {
-        return new ProcessVideoUseCase.UseCase(videoRepository);
+      useFactory: (videoRepository: VideoRepository.Repository, storageService: GoogleCloudStorageService) => {
+        return new ProcessVideoUseCase.UseCase(videoRepository, storageService);
       },
-      inject: ['VideoRepository'],
+      inject: ['VideoRepository', 'StorageService'],
     },
     {
       provide: GetVideoUseCase.UseCase,

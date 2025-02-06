@@ -9,6 +9,7 @@ export type VideoProps = {
   userId: string;
   userEmail: string;
   base64: string;
+  processedVideoUrl?: string;
 };
 
 export class VideoEntity extends Entity<VideoProps> {
@@ -28,6 +29,10 @@ export class VideoEntity extends Entity<VideoProps> {
 
   updateStatus(value: 'processing' | 'completed' | 'failed' | 'retrieved') {
     this.props.status = value;
+  }
+
+  updateVideoUrl(url: string) {
+    this.props.processedVideoUrl = url;
   }
 
   get base64(): string {
@@ -52,5 +57,9 @@ export class VideoEntity extends Entity<VideoProps> {
 
   get userEmail(): string {
     return this.props.userEmail;
+  }
+
+  get processedVideoUrl(): string | null {
+    return this.props.processedVideoUrl ?? null;
   }
 }

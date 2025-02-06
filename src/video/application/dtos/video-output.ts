@@ -8,6 +8,7 @@ export type VideoOutput = {
   userId: string;
   userEmail: string;
   base64: string;
+  processedVideoUrl?: string;
 };
 
 export class VideoOutputMapper {
@@ -20,6 +21,7 @@ export class VideoOutputMapper {
       userId: entity.userId,
       userEmail: entity.userEmail,
       base64: entity.base64,
+      processedVideoUrl: entity.processedVideoUrl 
     };
   }
 }
