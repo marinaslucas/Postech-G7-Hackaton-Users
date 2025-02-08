@@ -3,7 +3,7 @@ import { NotificationPrismaRepository } from "../../nofitication-prisma.reposito
 import { Test, TestingModule } from "@nestjs/testing";
 import { NotFoundError } from "../../../../../../../shared/domain/errors/not-found-error";
 import { NotificationEntity } from "../../../../../../domain/entities/notification.entity";
-import { notificationDataBuilder } from "src/notifications/domain/testing/helpers/notification-data-builder";
+import { notificationDataBuilder } from "../../../../../../domain/testing/helpers/notification-data-builder";
 import { DatabaseModule } from "../../../../../../../shared/infraestructure/database/database.module";
 import { NotificationRepository } from "../../../../../../domain/repositories/notification.repository";
 
