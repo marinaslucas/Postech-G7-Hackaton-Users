@@ -3,8 +3,6 @@ import { EnvConfigModule } from './shared/infraestructure/env-config/env-config.
 import { UsersModule } from './users/infraestructure/users.module';
 import { DatabaseModule } from './shared/infraestructure/database/database.module';
 import { AuthModule } from './auth/infraestructure/auth.module';
-import { VideoModule } from './video/infraestructure/video.module';
-import { NotificationsModule } from './notifications/infraestructure/notification.module';
 
 @Module({
   imports: [
@@ -12,8 +10,6 @@ import { NotificationsModule } from './notifications/infraestructure/notificatio
     UsersModule,
     DatabaseModule,
     AuthModule,
-    VideoModule,
-    NotificationsModule
   ],
 })
 export class AppModule {}
